@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="yesnotype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='1'/>
+            <xs:minInclusive value='0'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="integrationtimetype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='10'/>
+            <xs:minInclusive value='1'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="debugtype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='7'/>
+            <xs:minInclusive value='0'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="porttype">
+        <xs:restriction base="xs:integer">
+            <xs:maxInclusive value='60000'/>
+            <xs:minExclusive value='1024'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:simpleType name="ipadresstype">
+        <xs:restriction base="xs:string">
+            <xs:pattern value = '\b(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b'/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:complexType name="voltagecurrentmeastype"
+        <xs:sequence>
+            <xs:element name="n" base="xs:integer" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="code1" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="code2" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code3" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code4" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code5" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code6" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code7" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code8" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code9" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code10" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code11" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="code12" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code13" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code14" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code15" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code16" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code17" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code18" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code19" type="xs:string" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="code20" type="xs:string" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+
+
+    <xs:complexType name="measuringmodetype"
+        <xs:sequence>
+            <xs:element name="mode" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="cross" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+        </xs:sequence>
+    <xs:complexType>
+
+
+    <xs:element name="bridgeconf">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="debuglevel" type="debugtype" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="configfile" type="xs:string" minOccurs="1" maxOccurs="1"/>
+                <xs:element name="referencemeter">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="ip" type="ipadresstype"/>
+                            <xs:element name="port" type="porttype"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+                <xs:element> name="rangeauto" type="yesnotype" minOccurs="1" maxOccurs="1"/>
+                <xs:element> name="grouping" type="yesnotype" minOccurs="1" maxOccurs="1"/>
+                <xs:element> name="integrationtime" type="integrationtimetype" minOccurs="1" maxOccurs="1"/>
+                <xs:element> name="voltagerange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+                <xs:element> name="currentrange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+                <xs:element> name="measuringmode" type="measuringmodetype" minOccurs="1" maxOccurs="1"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+	
+</xs:schema> 
+
