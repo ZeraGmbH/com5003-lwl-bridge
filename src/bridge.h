@@ -35,7 +35,7 @@ enum lwlDataPositions
 };
 
 class cSPIConnection;
-class cSPIDevice;
+class QSPIDevice;
 
 class cBridge: public QObject
 {
@@ -61,8 +61,8 @@ private:
     cLWLConnection *m_pLWLConnection;
     cETHConnection *m_pETHConnection;
     QTcpSocket *m_pSocket;
-    cSPIDevice *m_pSPICtrlDevice;
-    cSPIDevice *m_pSPIDataDevice;
+    QSPIDevice *m_pSPICtrlDevice;
+    QSPIDevice *m_pSPIDataDevice;
     cETHCmdSerializer *m_pCmdSerializer;
     cETHParameterDelegate *parameterDelegate;
     cETHMeasureDelegate *measureDelegate;

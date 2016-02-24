@@ -5,6 +5,7 @@
 #include <QStateMachine>
 #include <QState>
 #include <QFinalState>
+#include <QSPIDevice>
 
 #include "bridge.h"
 #include "lwlconnection.h"
@@ -15,7 +16,6 @@
 #include "ethmeasuredelegate.h"
 #include "ethoscilloscopedelegate.h"
 #include "ethcmdserializer.h"
-#include "spidevice.h"
 #include "spiconnection.h"
 
 
@@ -117,7 +117,7 @@ void cBridge::bridgeConfigurationDone()
 
     m_pBridgeConfigData = m_pBridgeConfiguration->getConfigurationData();
 
-    m_pSPICtrlDevice = new cSPIDevice(m_pBridgeConfigData->m_sSPICtrlDeviceName);
+    m_pSPICtrlDevice = new QSPIDevice(m_pBridgeConfigData->m_sSPICtrlDeviceName);
     if (!m_pSPICtrlDevice->open(QIODevice::ReadWrite))
     {
         bridgeError(-1); // we cancel program if we don't find specified spi device
@@ -148,7 +148,7 @@ void cBridge::bridgeConfigurationDone()
         return;
     }
 
-    m_pSPIDataDevice = new cSPIDevice(m_pBridgeConfigData->m_sSPIDataDeviceName);
+    m_pSPIDataDevice = new QSPIDevice(m_pBridgeConfigData->m_sSPIDataDeviceName);
     if (!m_pSPIDataDevice->open(QIODevice::ReadWrite))
     {
         bridgeError(-1); // we cancel program if we don't find specified spi device

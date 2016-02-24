@@ -1,8 +1,10 @@
+#include <QSPIDevice>
+
 #include "spiconnection.h"
-#include "spidevice.h"
 
 
-cSPIConnection::cSPIConnection(cSPIDevice *spictrldev, cSPIDevice *spidatadev)
+
+cSPIConnection::cSPIConnection(QSPIDevice *spictrldev, QSPIDevice *spidatadev)
     :m_pSPICtrlDevice(spictrldev), m_pSPIDataDevice(spidatadev)
 {
 }

@@ -33,8 +33,7 @@ SOURCES += src/main.cpp \
     src/ethmeasuredelegate.cpp \
     src/ethoscilloscopedelegate.cpp \
     src/ethcmddelegate.cpp \
-    src/spiconnection.cpp \
-    src/spidevice.cpp
+    src/spiconnection.cpp
 
 HEADERS += \
     src/bridgeconfigdata.h \
@@ -48,8 +47,7 @@ HEADERS += \
     src/ethmeasuredelegate.h \
     src/ethoscilloscopedelegate.h \
     src/spi2fpga.h \
-    src/spiconnection.h \
-    src/spidevice.h
+    src/spiconnection.h
 
 OTHER_FILES += \
     src/bridge.xml \
