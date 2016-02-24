@@ -17,6 +17,8 @@ enum moduleconfigstate
     setDebugLevel,
     setReferenceMeterIp,
     setReferenceMeterPort,
+    setSPICtrlDeviceName,
+    setSPIDataDeviceName,
     setRangeAuto,
     setGrouping,
     setIntegrationtime,
@@ -34,8 +36,8 @@ enum moduleconfigstate
 
 class cBridgeConfigData;
 
-const QString defaultXSDFile = "://src/bridge.xsd";
-const QString defaultXMLFile = "://src/bridge.xml";
+const QString defaultXSDFile = "/etc/zera/com5003bridge/bridge.xsd";
+const QString defaultXMLFile = "/etc/zera/com5003bridge/bridge.xml";
 
 
 class cBridgeConfiguration: public QObject

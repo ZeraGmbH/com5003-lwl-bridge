@@ -34,6 +34,9 @@ enum lwlDataPositions
     OsciCmd = 29
 };
 
+class cSPIConnection;
+class cSPIDevice;
+
 class cBridge: public QObject
 {
     Q_OBJECT
@@ -46,6 +49,7 @@ signals:
     void startMeasurement();
     void startOscilloscope();
     void syncFG301();
+    void error(int);
 
 private:
     bool m_bActive;
@@ -53,9 +57,12 @@ private:
     cBridgeConfiguration *m_pBridgeConfiguration;
     cBridgeConfigData *m_pBridgeConfigData;
 
+    cSPIConnection *m_pSPIConnection;
     cLWLConnection *m_pLWLConnection;
     cETHConnection *m_pETHConnection;
     QTcpSocket *m_pSocket;
+    cSPIDevice *m_pSPICtrlDevice;
+    cSPIDevice *m_pSPIDataDevice;
     cETHCmdSerializer *m_pCmdSerializer;
     cETHParameterDelegate *parameterDelegate;
     cETHMeasureDelegate *measureDelegate;

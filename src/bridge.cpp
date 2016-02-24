@@ -15,6 +15,9 @@
 #include "ethmeasuredelegate.h"
 #include "ethoscilloscopedelegate.h"
 #include "ethcmdserializer.h"
+#include "spidevice.h"
+#include "spiconnection.h"
+
 
 
 cBridge::cBridge()
@@ -52,6 +55,21 @@ cBridge::~cBridge()
         delete m_pLWLConnection;
     if (m_pETHConnection)
         delete m_pETHConnection;
+
+    if (m_pSPICtrlDevice)
+    {
+        m_pSPICtrlDevice->close();
+        delete m_pSPICtrlDevice;
+    }
+
+    if (m_pSPIDataDevice)
+    {
+        m_pSPIDataDevice->close();
+        delete m_pSPIDataDevice;
+    }
+
+    if (m_pSPIConnection)
+        delete m_pSPIConnection;
 
     if (m_pBridgeStateMachine)
     {
@@ -98,7 +116,71 @@ void cBridge::bridgeConfigurationDone()
     // if configuration is done we setup our connections and the bridges real statemachine
 
     m_pBridgeConfigData = m_pBridgeConfiguration->getConfigurationData();
-    m_pLWLConnection = new cLWLConnection();
+
+    m_pSPICtrlDevice = new cSPIDevice(m_pBridgeConfigData->m_sSPICtrlDeviceName);
+    if (!m_pSPICtrlDevice->open(QIODevice::ReadWrite))
+    {
+        bridgeError(-1); // we cancel program if we don't find specified spi device
+        return;
+    }
+
+    if (!m_pSPICtrlDevice->setBitSpeed(16000000)) // see BB-SPIDEVx-00A0.dts
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPICtrlDevice->setMode(3))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPICtrlDevice->setLSBFirst(false))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPICtrlDevice->setBitsPerWord(40))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    m_pSPIDataDevice = new cSPIDevice(m_pBridgeConfigData->m_sSPIDataDeviceName);
+    if (!m_pSPIDataDevice->open(QIODevice::ReadWrite))
+    {
+        bridgeError(-1); // we cancel program if we don't find specified spi device
+        return;
+    }
+
+    if (!m_pSPIDataDevice->setBitSpeed(50000000)) // see BB-SPIDEVx-00A0.dts
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPIDataDevice->setMode(3))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPIDataDevice->setLSBFirst(false))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    if(!m_pSPIDataDevice->setBitsPerWord(16))
+    {
+        bridgeError(-1);
+        return;
+    }
+
+    m_pSPIConnection = new cSPIConnection(m_pSPICtrlDevice, m_pSPIDataDevice);
+    m_pLWLConnection = new cLWLConnection(m_pSPIConnection);
     m_pETHConnection = new cETHConnection(m_pBridgeConfigData);
     m_pCmdSerializer = new cETHCmdSerializer();
 
@@ -164,7 +246,6 @@ void cBridge::bridgeConfigurationDone()
     connect(m_pLWLConnection, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
     connect(m_pLWLConnection,SIGNAL(dataAvail()), this, SLOT(bridgeLWLCommand()));
     connect(m_pETHConnection, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
-
 }
 
 

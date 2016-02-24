@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
 <bridgeconf>
     <debuglevel>0</debuglevel>
-    <configfile>/etc/zera/bridge/bridge.xml</configfile>
     <referencemeter>
         <ip>192.168.7.222</ip>
         <port>6312</port>
+        <spictrl>/dev/spidev1.0</spictrl>
+        <spidata>/dev/spidev2.0</spidata>
         <rangeauto>0</rangeauto>
-        <grouping>0</grouping>
+        <grouping>1</grouping>
         <integrationtime>1</integrationtime>
         <voltagerange>
             <n>6</n>
@@ -61,6 +62,7 @@
                 <code8>4LS,4LW,4LB</code8>
                 <code9>4LSg,4LW,4LB</code9>
                 <code10>2LS,2LW,2LB</code10>
+            </cross>
         </measuring>
     </referencemeter>
 </bridgeconf>

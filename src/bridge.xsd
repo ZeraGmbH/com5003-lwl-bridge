@@ -85,16 +85,19 @@
                         <xs:sequence>
                             <xs:element name="ip" type="ipadresstype"/>
                             <xs:element name="port" type="porttype"/>
+                            <xs:element name="spictrl" type = "xs:string" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="spidata" type = "xs:string" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="rangeauto" type="yesnotype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="grouping" type="yesnotype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="integrationtime" type="integrationtimetype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="voltagerange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="currentrange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="measuringmode" type="measuringmodetype" minOccurs="1" maxOccurs="1"/>
+
                         </xs:sequence>
                     </xs:complexType>
-                </xs:element>
-                <xs:element> name="rangeauto" type="yesnotype" minOccurs="1" maxOccurs="1"/>
-                <xs:element> name="grouping" type="yesnotype" minOccurs="1" maxOccurs="1"/>
-                <xs:element> name="integrationtime" type="integrationtimetype" minOccurs="1" maxOccurs="1"/>
-                <xs:element> name="voltagerange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-                <xs:element> name="currentrange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-                <xs:element> name="measuringmode" type="measuringmodetype" minOccurs="1" maxOccurs="1"/>
-            </xs:sequence>
+
+        </xs:sequence>
         </xs:complexType>
     </xs:element>
 	

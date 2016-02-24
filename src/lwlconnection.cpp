@@ -4,11 +4,11 @@
 #include "lwlconnection.h"
 #include "spiconnection.h"
 
-cLWLConnection::cLWLConnection()
+cLWLConnection::cLWLConnection(cSPIConnection *spiconnection)
+    :m_pSPIConnection(spiconnection)
 {
     m_bconnected = false;
 
-    m_pSPIConnection = new cSPIConnection();
     m_pLWLLoadTimer = new QTimer(this);
     connect(m_pLWLLoadTimer, SIGNAL(timeout()), this, SLOT(readLWLInput()));
     m_pLWLLoadTimer->start(50); // our base time for lwl test is 50 ms

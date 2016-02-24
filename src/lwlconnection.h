@@ -18,7 +18,7 @@ class cLWLConnection: public QObject
     Q_OBJECT
 
 public:
-    cLWLConnection();
+    cLWLConnection(cSPIConnection* spiconnection);
     ~cLWLConnection();
     bool isConnected();
     QByteArray& getLWLInput();    
@@ -34,10 +34,10 @@ signals:
     void error(int);
 
 private:
+    cSPIConnection *m_pSPIConnection;
     QTimer *m_pLWLLoadTimer;
     QByteArray lwlInput;
     QByteArray lwlOutput;
-    cSPIConnection *m_pSPIConnection;
 
     bool m_bconnected;
     quint8 m_nDisconnectCount;

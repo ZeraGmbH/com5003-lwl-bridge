@@ -21,6 +21,7 @@ TEMPLATE = app
 
 LIBS += -lzeraxmlconfig
 LIBS += -lzeramath
+LIBS += -lQt5SpiDevice
 
 SOURCES += src/main.cpp \
     src/bridgeconfiguration.cpp \
@@ -32,7 +33,8 @@ SOURCES += src/main.cpp \
     src/ethmeasuredelegate.cpp \
     src/ethoscilloscopedelegate.cpp \
     src/ethcmddelegate.cpp \
-    src/spiconnection.cpp
+    src/spiconnection.cpp \
+    src/spidevice.cpp
 
 HEADERS += \
     src/bridgeconfigdata.h \
@@ -46,8 +48,16 @@ HEADERS += \
     src/ethmeasuredelegate.h \
     src/ethoscilloscopedelegate.h \
     src/spi2fpga.h \
-    src/spiconnection.h
+    src/spiconnection.h \
+    src/spidevice.h
 
 OTHER_FILES += \
     src/bridge.xml \
     src/bridge.xsd
+
+configxml.path = /etc/zera/com5003bridge
+configxml.files = bridge.xsd \
+                  bridge.xml
+
+INSTALLS += configxml
+
