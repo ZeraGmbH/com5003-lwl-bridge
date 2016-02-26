@@ -38,31 +38,19 @@
         </currentrange>
         <measuring>
             <mode>
-                <n>10</n>
-                <code1>1,pow1,4LW</code1>
-                <code2>2,pow1,3LW</code2>
-                <code3>25,pow1,2LW<code3>
-                <code4>3,pow2,4LBK</code4>
-                <code5>4,pow2,4LB</code5>
-                <code6>8,pow2,3LB</code6>
-                <code7>26,pow2,2LB</code7>
-                <code8>14,pow3,4LS</code8>
-                <code9>20,pow3,4LSg</code9>
-                <code10>27,pow3,2LS</code10>
+                <n>11</n>
+                <code1>1,pow4,4LW,pow1,4LW,pow2,4LB,pow3,4LS</code1>
+                <code2>2,pow4,3LW,pow1,3LW,pow2,3LB,pow3,4LS</code2>
+                <code3>3,pow4,2LW,pow1,2LW,pow2,2LB,pow3,2LS</code3>
+                <code4>4,pow4,4LB,pow1,4LW,pow2,4LB,pow3,4LS</code4>
+                <code5>5,pow4,4LBK,pow1,4LW,pow2,4LBK,pow3,4LS</code5>
+                <code6>6,pow4,3LB,pow1,3LW,pow2,3LB,pow3,4LS</code6>
+                <code7>7,pow4,2LB,pow1,2LW,pow2,2LB,pow3,2LS</code7>
+                <code8>8,pow4,4LS,pow1,4LW,pow2,4LB,pow3,4LS</code8>
+                <code9>9,pow4,4LSg,pow1,4LW,pow2,4LB,pow3,4LSg</code9>
+                <code10>10,pow4,2LS,pow1,2LW,pow2,2LB,pow3,2LS</code10>
+                <code11>11,pow4,2LSg,pow1,2LW,pow2,2LB,pow3,2LSg</code11>
             </mode>
-            <cross>
-                <n>10</n>
-                <code1>4LW,4LB,4LS</code1>
-                <code2>3LW,3LB,4LS</code2>
-                <code3>2LW,2LB,2LS<code3>
-                <code4>4LBK,4LW,4LS</code4>
-                <code5>4LB,4LW,4LS</code5>
-                <code6>3LB,3LW,4LS</code6>
-                <code7>2LB,2LW,2LS</code7>
-                <code8>4LS,4LW,4LB</code8>
-                <code9>4LSg,4LW,4LB</code9>
-                <code10>2LS,2LW,2LB</code10>
-            </cross>
         </measuring>
     </referencemeter>
 </bridgeconf>

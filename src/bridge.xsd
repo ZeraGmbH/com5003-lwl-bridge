@@ -40,7 +40,7 @@
     </xs:simpleType>
 
 
-    <xs:complexType name="voltagecurrentmeastype"
+    <xs:complexType name="voltagecurrentmeastype">
         <xs:sequence>
             <xs:element name="n" base="xs:integer" minOccurs="1" maxOccurs="1"/>
             <xs:element name="code1" type="xs:string" minOccurs="1" maxOccurs="1"/>
@@ -53,7 +53,7 @@
             <xs:element name="code8" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code9" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code10" type="xs:string" minOccurs="0" maxOccurs="1"/>
-            <xs:element name="code11" type="xs:string" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="code11" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code12" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code13" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code14" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -65,14 +65,6 @@
             <xs:element name="code20" type="xs:string" minOccurs="0" maxOccurs="1"/>
         </xs:sequence>
     </xs:complexType>
-
-
-    <xs:complexType name="measuringmodetype"
-        <xs:sequence>
-            <xs:element name="mode" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-            <xs:element name="cross" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-        </xs:sequence>
-    <xs:complexType>
 
 
     <xs:element name="bridgeconf">
@@ -92,7 +84,7 @@
                             <xs:element name="integrationtime" type="integrationtimetype" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="voltagerange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="currentrange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-                            <xs:element name="measuringmode" type="measuringmodetype" minOccurs="1" maxOccurs="1"/>
+                            <xs:element name="measuringmode" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
 
                         </xs:sequence>
                     </xs:complexType>

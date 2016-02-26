@@ -10,6 +10,7 @@
 cBridgeConfiguration::cBridgeConfiguration()
 {
     m_pBridgeConfigData = 0;
+    m_pXMLReader = new Zera::XMLConfig::cReader(this);
     connect(m_pXMLReader, SIGNAL(valueChanged(const QString&)), this, SLOT(configXMLInfo(const QString&)));
     connect(m_pXMLReader, SIGNAL(finishedParsingXML(bool)), this, SLOT(completeConfiguration(bool)));
 }
@@ -44,7 +45,6 @@ void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
     m_ConfigXMLMap["bridgeconf:referencemeter:voltagerange:n"] = setVoltagerangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:currentrange:n"] = setCurrentrangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:measuring:mode:n"] = setMeasuringmodeCount;
-    m_ConfigXMLMap["bridgeconf:referencemeter:measuring:cross:n"] = setMeasuringmodeCrossCount;
 
     if (m_pXMLReader->loadSchema(defaultXSDFile))
         m_pXMLReader->loadXMLFromString(QString::fromUtf8(xmlString.data(), xmlString.size()));
@@ -114,11 +114,6 @@ void cBridgeConfiguration::configXMLInfo(QString key)
             for (int i = 0; i << m_pBridgeConfigData->m_nMeasuringmodeCount; i++)
                 m_ConfigXMLMap[QString("bridgeconf:referencemeter:measuring:mode:code%1").arg(i+1)] = setMeasuringmode1 + i;
             break;
-        case setMeasuringmodeCrossCount:
-            m_pBridgeConfigData->m_nMeasuringmodeCrossCount = m_pXMLReader->getValue(key).toInt(&ok);
-            for (int i = 0; i << m_pBridgeConfigData->m_nMeasuringmodeCrossCount; i++)
-                m_ConfigXMLMap[QString("bridgeconf:referencemeter:measuring:cross:code%1").arg(i+1)] = setMeasuringmodeCross1 + i;
-            break;
         default:
             if ((cmd >= setVoltagerange1) && (cmd < setVoltagerange1 + 32))
             {
@@ -139,19 +134,24 @@ void cBridgeConfiguration::configXMLInfo(QString key)
                     if ((cmd >= setMeasuringmode1) && (cmd < setMeasuringmode1 + 32))
                     {
                         cmd -= setMeasuringmode1;
-                        // it is command for setting a measuring mode with slection code and related power meter
+                        // it is command for setting a measuring mode with selection code and related power meters
+                        QString module, mode;
                         QStringList mmInfo = m_pXMLReader->getValue(key).split(",");
-                        m_pBridgeConfigData->m_MeasuringmodeHash[mmInfo[0].toInt(&ok)] = cModeSelect(mmInfo[1], mmInfo[2]);
-                    }
-            else
-                        if ((cmd >= setMeasuringmodeCross1) && (cmd < setMeasuringmodeCross1 + 32))
+                        cModeSelect mSelect;
+
+                        int mmnr = mmInfo.takeFirst().toInt(&ok);
+                        if (ok)
                         {
-                            cmd -= setMeasuringmodeCross1;
-                            // it is command for setting measuring mode cross reference list
-                            QStringList mmInfo = m_pXMLReader->getValue(key).split(",");
-                            QString mmRef = mmInfo.takeFirst();
-                            m_pBridgeConfigData->m_CrossreferenceModeHash[mmRef] = mmInfo;
+                            while (mmInfo.count() > 0)
+                            {
+                                module = mmInfo.takeFirst();
+                                mode = mmInfo.takeFirst();
+                                mSelect.addMeasuringMode(module, mode);
+                            }
                         }
+
+                        m_pBridgeConfigData->m_MeasuringmodeHash[mmnr] = mSelect;
+                    }
         }
         m_bConfigError |= !ok;
     }

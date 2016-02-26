@@ -25,12 +25,10 @@ enum moduleconfigstate
     setVoltagerangeCount,
     setCurrentrangeCount,
     setMeasuringmodeCount,
-    setMeasuringmodeCrossCount,
 
     setVoltagerange1 = 16, // we leave place for up to 32 ranges .....
     setCurrentrange1 = 48,
-    setMeasuringmode1 = 80,
-    setMeasuringmodeCross1 = 112
+    setMeasuringmode1 = 80
 };
 
 

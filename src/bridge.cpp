@@ -298,31 +298,11 @@ void cBridge::bridgeLWLCommand()
     cmdList.append(QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[lwlInput[UBCode]]));
     cmdList.append(QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[lwlInput[IBCode]]));
 
+    // we set all configuration listed measuring modes related to MMCode
     cModeSelect mSelect;
     mSelect = m_pBridgeConfigData->m_MeasuringmodeHash[lwlInput[MMCode]];
-    cmdList.append(QString("conf:%1:mmod %2;\n").arg(mSelect.m_sModuleName).arg(mSelect.m_sMeasmodeName));
-
-    // additionally we have to set the other 2 powermeters to fg301 expoected measuring mode
-    // depends on the crossreferencemode hash
-
-    QStringList sl;
-
-    sl = m_pBridgeConfigData->m_CrossreferenceModeHash[mSelect.m_sMeasmodeName];
-
-    QList<cModeSelect> modeSelectList;
-    modeSelectList = m_pBridgeConfigData->m_MeasuringmodeHash.values();
-    for (int i = 0; i < modeSelectList.count(); i++)
-        if (modeSelectList.at(i).m_sMeasmodeName ==  sl.at(0))
-        {
-            cmdList.append(QString("conf:%1:mmod %2;\n").arg(modeSelectList.at(i).m_sModuleName).arg(modeSelectList.at(i).m_sMeasmodeName));
-            break;
-        }
-    for (int i = 0; i < modeSelectList.count(); i++)
-        if (modeSelectList.at(i).m_sMeasmodeName ==  sl.at(1))
-        {
-            cmdList.append(QString("conf:%1:mmod %2;\n").arg(modeSelectList.at(i).m_sModuleName).arg(modeSelectList.at(i).m_sMeasmodeName));
-            break;
-        }
+    for (int i = 0; i < mSelect.m_sModuleNameList.count(); i++)
+        cmdList.append(QString("conf:%1:mmod %2;\n").arg(mSelect.m_sModuleNameList.at(i)).arg(mSelect.m_sMeasmodeNameList.at(i)));
 
     measureDelegate->setAngleReference(lwlInput[AngleRefCode]);
 

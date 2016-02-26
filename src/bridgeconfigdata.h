@@ -2,6 +2,7 @@
 #define BRIDGECONFIGURATIONDATA
 
 #include <QString>
+#include <QStringList>
 #include <QHash>
 
 
@@ -9,9 +10,12 @@ class cModeSelect
 {
 public:
     cModeSelect(){}
-    cModeSelect(QString module, QString mode): m_sModuleName(module), m_sMeasmodeName(mode){}
-    QString m_sModuleName;
-    QString m_sMeasmodeName;
+
+    void addMeasuringMode(QString module, QString mode)
+        {m_sModuleNameList.append(module);m_sMeasmodeNameList.append(mode);}
+
+    QStringList m_sModuleNameList;
+    QString m_sMeasmodeNameList;
 };
 
 
@@ -28,11 +32,9 @@ struct cBridgeConfigData
     quint8 m_nVoltagerangeCount;
     quint8 m_nCurrentrangeCount;
     quint8 m_nMeasuringmodeCount;
-    quint8 m_nMeasuringmodeCrossCount;
     QHash<int, QString> m_VoltageRangeHash;
     QHash<int, QString> m_CurrentRangeHash;
     QHash<int, cModeSelect> m_MeasuringmodeHash;
-    QHash<QString, QStringList> m_CrossreferenceModeHash;
 };
 
 #endif // BRIDGECONFIGURATIONDATA
