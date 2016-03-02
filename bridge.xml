@@ -3,7 +3,7 @@
     <debuglevel>0</debuglevel>
     <referencemeter>
         <ip>192.168.7.222</ip>
-        <port>6312</port>
+        <port>6320</port>
         <spictrl>/dev/spidev1.0</spictrl>
         <spidata>/dev/spidev2.0</spidata>
         <rangeauto>0</rangeauto>

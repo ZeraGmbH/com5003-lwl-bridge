@@ -24,35 +24,35 @@ LIBS += -lzeraxmlconfig
 LIBS += -lzeramath
 LIBS += -lQt5SpiDevice
 
-SOURCES += src/main.cpp \
-    src/bridgeconfiguration.cpp \
-    src/lwlconnection.cpp \
-    src/bridge.cpp \
-    src/ethconnection.cpp \
-    src/ethcmdserializer.cpp \
-    src/ethparameterdelegate.cpp \
-    src/ethmeasuredelegate.cpp \
-    src/ethoscilloscopedelegate.cpp \
-    src/ethcmddelegate.cpp \
-    src/spiconnection.cpp
+SOURCES += main.cpp \
+    bridgeconfiguration.cpp \
+    lwlconnection.cpp \
+    bridge.cpp \
+    ethconnection.cpp \
+    ethcmdserializer.cpp \
+    ethparameterdelegate.cpp \
+    ethmeasuredelegate.cpp \
+    ethoscilloscopedelegate.cpp \
+    ethcmddelegate.cpp \
+    spiconnection.cpp
 
 HEADERS += \
-    src/bridgeconfigdata.h \
-    src/bridgeconfiguration.h \
-    src/lwlconnection.h \
-    src/bridge.h \
-    src/ethconnection.h \
-    src/ethcmddelegate.h \
-    src/ethcmdserializer.h \
-    src/ethparameterdelegate.h \
-    src/ethmeasuredelegate.h \
-    src/ethoscilloscopedelegate.h \
-    src/spi2fpga.h \
-    src/spiconnection.h
+    bridgeconfigdata.h \
+    bridgeconfiguration.h \
+    lwlconnection.h \
+    bridge.h \
+    ethconnection.h \
+    ethcmddelegate.h \
+    ethcmdserializer.h \
+    ethparameterdelegate.h \
+    ethmeasuredelegate.h \
+    ethoscilloscopedelegate.h \
+    spi2fpga.h \
+    spiconnection.h
 
 OTHER_FILES += \
-    src/bridge.xml \
-    src/bridge.xsd
+    bridge.xml \
+    bridge.xsd
 
 configxml.path = /etc/zera/com5003bridge
 configxml.files = bridge.xsd \
