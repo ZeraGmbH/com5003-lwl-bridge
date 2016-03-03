@@ -27,7 +27,6 @@ signals:
 
 private:
     cBridgeConfigData *m_pConfigData;
-    QTimer *m_pConnectTimer;
     QTcpSocket *m_pSocket;
 
 private slots:
