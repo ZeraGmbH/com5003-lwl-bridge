@@ -20,6 +20,8 @@ class cETHParameterDelegate;
 class cETHMeasureDelegate;
 class cETHOscilloscopeDelegate;
 
+#define DEBUG 1
+
 enum bridgeExitConditions
 {
     configError = 1
@@ -93,6 +95,9 @@ private slots:
     void bridgeConfigurationDone();
     void bridgeInactive();
 
+    void bridgeIdle();
+    void bridgeLWLConnected();
+    void bridgeETHConnected();
     void bridgeActiveInit();
     void bridgeActiveMeasureStart();
     void bridgeActiveMeasureDone();

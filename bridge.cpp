@@ -1,4 +1,5 @@
 #include <QFile>
+#include <QDebug>
 #include <QCoreApplication>
 #include <QStringList>
 #include <QString>
@@ -235,8 +236,11 @@ void cBridge::bridgeConfigurationDone()
 
     m_pBridgeStateMachine->setInitialState(m_pBridgeIdleState);
 
+    connect(m_pBridgeIdleState, SIGNAL(entered()), SLOT(bridgeIdle()));
     connect(m_pBridgeActiveState, SIGNAL(exited()), SLOT(bridgeInactive()));
     connect(m_pBridgeActiveInitState, SIGNAL(entered()), SLOT(bridgeActiveInit()));
+    connect(m_pBridgeLWLConnectedState, SIGNAL(entered()), SLOT(bridgeLWLConnected()));
+    connect(m_pBridgeETHConnectedState, SIGNAL(entered()), SLOT(bridgeETHConnected()));
     connect(m_pBridgeActiveMeasureStartState, SIGNAL(entered()), SLOT(bridgeActiveMeasureStart()));
     connect(m_pBridgeActiveMeasureDoneState, SIGNAL(entered()), SLOT(bridgeActiveMeasureDone()));
     connect(m_pBridgeActiveOscilloscopeStartState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeStart()));
@@ -246,6 +250,8 @@ void cBridge::bridgeConfigurationDone()
     connect(m_pLWLConnection, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
     connect(m_pLWLConnection,SIGNAL(dataAvail()), this, SLOT(bridgeLWLCommand()));
     connect(m_pETHConnection, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
+
+    m_pBridgeStateMachine->start();
 }
 
 
@@ -257,8 +263,36 @@ void cBridge::bridgeInactive()
 }
 
 
-void cBridge::bridgeActiveInit()
+void cBridge::bridgeIdle()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge idle state entered";
+#endif
+}
+
+
+void cBridge::bridgeLWLConnected()
+{
+#ifdef DEBUG
+    qDebug() << "Bridge LWL connected state entered";
+#endif
+}
+
+
+void cBridge::bridgeETHConnected()
+{
+#ifdef DEBUG
+    qDebug() << "Bridge ETH connected state entered";
+#endif
+}
+
+
+void cBridge::bridgeActiveInit()
+{    
+#ifdef DEBUG
+    qDebug() << "Bridge active state entered";
+#endif
+
     // we have to set some default values , info about these comes from xml config file
 
     m_bActive = true;
