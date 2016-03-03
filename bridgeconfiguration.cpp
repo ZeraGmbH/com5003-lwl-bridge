@@ -107,7 +107,7 @@ void cBridgeConfiguration::configXMLInfo(QString key)
         case setCurrentrangeCount:
             m_pBridgeConfigData->m_nCurrentrangeCount = m_pXMLReader->getValue(key).toInt(&ok);
             for (int i = 0; i < m_pBridgeConfigData->m_nCurrentrangeCount; i++)
-                m_ConfigXMLMap[QString("bridgeconf:referencemeter:currentrange:code%1").arg(i+1)] = setVoltagerange1 + i;
+                m_ConfigXMLMap[QString("bridgeconf:referencemeter:currentrange:code%1").arg(i+1)] = setCurrentrange1 + i;
             break;
         case setMeasuringmodeCount:
             m_pBridgeConfigData->m_nMeasuringmodeCount = m_pXMLReader->getValue(key).toInt(&ok);
