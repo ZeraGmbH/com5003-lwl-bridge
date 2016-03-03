@@ -101,17 +101,17 @@ void cBridgeConfiguration::configXMLInfo(QString key)
             break;
         case setVoltagerangeCount:
             m_pBridgeConfigData->m_nVoltagerangeCount = m_pXMLReader->getValue(key).toInt(&ok);
-            for (int i = 0; i << m_pBridgeConfigData->m_nVoltagerangeCount; i++)
+            for (int i = 0; i < m_pBridgeConfigData->m_nVoltagerangeCount; i++)
                 m_ConfigXMLMap[QString("bridgeconf:referencemeter:voltagerange:code%1").arg(i+1)] = setVoltagerange1 + i;
             break;
         case setCurrentrangeCount:
             m_pBridgeConfigData->m_nCurrentrangeCount = m_pXMLReader->getValue(key).toInt(&ok);
-            for (int i = 0; i << m_pBridgeConfigData->m_nCurrentrangeCount; i++)
+            for (int i = 0; i < m_pBridgeConfigData->m_nCurrentrangeCount; i++)
                 m_ConfigXMLMap[QString("bridgeconf:referencemeter:currentrange:code%1").arg(i+1)] = setVoltagerange1 + i;
             break;
         case setMeasuringmodeCount:
             m_pBridgeConfigData->m_nMeasuringmodeCount = m_pXMLReader->getValue(key).toInt(&ok);
-            for (int i = 0; i << m_pBridgeConfigData->m_nMeasuringmodeCount; i++)
+            for (int i = 0; i < m_pBridgeConfigData->m_nMeasuringmodeCount; i++)
                 m_ConfigXMLMap[QString("bridgeconf:referencemeter:measuringmode:code%1").arg(i+1)] = setMeasuringmode1 + i;
             break;
         default:
