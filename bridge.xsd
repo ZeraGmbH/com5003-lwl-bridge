@@ -42,7 +42,7 @@
 
     <xs:complexType name="voltagecurrentmeastype">
         <xs:sequence>
-            <xs:element name="n" base="xs:integer" minOccurs="1" maxOccurs="1"/>
+            <xs:element name="n" type="xs:integer" minOccurs="1" maxOccurs="1"/>
             <xs:element name="code1" type="xs:string" minOccurs="1" maxOccurs="1"/>
             <xs:element name="code2" type="xs:string" minOccurs="0" maxOccurs="1"/>
             <xs:element name="code3" type="xs:string" minOccurs="0" maxOccurs="1"/>
@@ -85,10 +85,9 @@
                             <xs:element name="voltagerange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="currentrange" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
                             <xs:element name="measuringmode" type="voltagecurrentmeastype" minOccurs="1" maxOccurs="1"/>
-
                         </xs:sequence>
                     </xs:complexType>
-
+                </xs:element>
         </xs:sequence>
         </xs:complexType>
     </xs:element>
