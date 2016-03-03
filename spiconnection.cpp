@@ -13,13 +13,19 @@ cSPIConnection::cSPIConnection(QSPIDevice *spictrldev, QSPIDevice *spidatadev)
 bool cSPIConnection::writeSPI(QByteArray &Output, quint32 OutputAdress, quint32 len)
 {
     bool ret;
+    QByteArray dataBA(Output);
 
+    // we got a bytearray greater than len and only want to send len
+    // but we must use qiodevice::write(qbytearray)
+    // using qiodevice::write(char*, len) stops when 0 encountered
+
+    dataBA.resize(len);
     ret  = setDataAdress(OutputAdress, true);
     if (ret)
     {
         // we could send the adress information
         // let's send data now
-        ret = (m_pSPIDataDevice->write(Output.data(), len) == len);
+        ret = (m_pSPIDataDevice->write(dataBA) == dataBA.size());
     }
 
     return ret;
@@ -54,5 +60,5 @@ bool cSPIConnection::setDataAdress(quint32 adress, bool write)
     ctrlBA.append((adress >> 8) & 0xff);
     ctrlBA.append(adress & 0xff);
 
-    return (m_pSPICtrlDevice->write(ctrlBA.data(), 5) == 5);
+    return (m_pSPICtrlDevice->write(ctrlBA) == ctrlBA.size());
 }
