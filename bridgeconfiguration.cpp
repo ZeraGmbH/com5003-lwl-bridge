@@ -41,7 +41,7 @@ void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
     m_ConfigXMLMap["bridgeconf:referencemeter:spidata"] = setSPIDataDeviceName;
     m_ConfigXMLMap["bridgeconf:referencemeter:rangeauto"] = setRangeAuto;
     m_ConfigXMLMap["bridgeconf:referencemeter:grouping"] = setGrouping;
-    m_ConfigXMLMap["bridgeconf:referencemeter:intergrationtime"] = setIntegrationtime;
+    m_ConfigXMLMap["bridgeconf:referencemeter:integrationtime"] = setIntegrationtime;
     m_ConfigXMLMap["bridgeconf:referencemeter:voltagerange:n"] = setVoltagerangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:currentrange:n"] = setCurrentrangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:measuringmode:n"] = setMeasuringmodeCount;
