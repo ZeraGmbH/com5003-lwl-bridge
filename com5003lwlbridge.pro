@@ -56,7 +56,7 @@ OTHER_FILES += \
     bridge.xml \
     bridge.xsd
 
-configxml.path = /etc/zera/com5003bridge
+configxml.path = /etc/zera/com5003lwlbridge/
 configxml.files = bridge.xsd \
                   bridge.xml
 
