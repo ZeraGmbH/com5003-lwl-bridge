@@ -6,7 +6,7 @@
 
 CONFIG += c++11
 
-QT       += core
+#QT       += core
 QT       += core spidevice
 
 QT       -= gui
