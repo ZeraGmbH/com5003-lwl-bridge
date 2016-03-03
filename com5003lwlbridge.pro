@@ -14,6 +14,8 @@ QT       += network
 
 include(bridge.user.pri)
 
+QMAKE_CXXFLAGS += -O0
+
 TARGET = COM5003LWLBridge
 CONFIG   += console
 CONFIG   -= app_bundle

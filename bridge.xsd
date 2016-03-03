@@ -71,7 +71,6 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element name="debuglevel" type="debugtype" minOccurs="1" maxOccurs="1"/>
-                <xs:element name="configfile" type="xs:string" minOccurs="1" maxOccurs="1"/>
                 <xs:element name="referencemeter">
                     <xs:complexType>
                         <xs:sequence>
