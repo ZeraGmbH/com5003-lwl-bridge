@@ -44,7 +44,7 @@ void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
     m_ConfigXMLMap["bridgeconf:referencemeter:intergrationtime"] = setIntegrationtime;
     m_ConfigXMLMap["bridgeconf:referencemeter:voltagerange:n"] = setVoltagerangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:currentrange:n"] = setCurrentrangeCount;
-    m_ConfigXMLMap["bridgeconf:referencemeter:measuring:mode:n"] = setMeasuringmodeCount;
+    m_ConfigXMLMap["bridgeconf:referencemeter:measuringmode:n"] = setMeasuringmodeCount;
 
     if (m_pXMLReader->loadSchema(defaultXSDFile))
         m_pXMLReader->loadXMLFromString(QString::fromUtf8(xmlString.data(), xmlString.size()));
@@ -112,7 +112,7 @@ void cBridgeConfiguration::configXMLInfo(QString key)
         case setMeasuringmodeCount:
             m_pBridgeConfigData->m_nMeasuringmodeCount = m_pXMLReader->getValue(key).toInt(&ok);
             for (int i = 0; i << m_pBridgeConfigData->m_nMeasuringmodeCount; i++)
-                m_ConfigXMLMap[QString("bridgeconf:referencemeter:measuring:mode:code%1").arg(i+1)] = setMeasuringmode1 + i;
+                m_ConfigXMLMap[QString("bridgeconf:referencemeter:measuringmode:code%1").arg(i+1)] = setMeasuringmode1 + i;
             break;
         default:
             if ((cmd >= setVoltagerange1) && (cmd < setVoltagerange1 + 32))
