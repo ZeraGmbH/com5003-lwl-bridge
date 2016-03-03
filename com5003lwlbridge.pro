@@ -24,6 +24,8 @@ LIBS += -lzeraxmlconfig
 LIBS += -lzeramath
 LIBS += -lQt5SpiDevice
 
+TARGET = com5003lwlbridge
+
 SOURCES += main.cpp \
     bridgeconfiguration.cpp \
     lwlconnection.cpp \
@@ -60,3 +62,5 @@ configxml.files = bridge.xsd \
 
 INSTALLS += configxml
 
+target.path = /usr/bin
+INSTALLS += target
