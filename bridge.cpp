@@ -227,12 +227,6 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeStateMachine->addState(m_pBridgeLWLConnectedState);
     m_pBridgeStateMachine->addState(m_pBridgeETHConnectedState);
     m_pBridgeStateMachine->addState(m_pBridgeActiveState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveInitState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveMeasureStartState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveMeasureDoneState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveOscilloscopeStartState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveOscilloscopeDoneState);
-    m_pBridgeStateMachine->addState(m_pBridgeActiveOscilloscopeSyncState);
 
     m_pBridgeStateMachine->setInitialState(m_pBridgeIdleState);
 
