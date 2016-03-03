@@ -60,5 +60,8 @@ bool cSPIConnection::setDataAdress(quint32 adress, bool write)
     ctrlBA.append((adress >> 8) & 0xff);
     ctrlBA.append(adress & 0xff);
 
-    return (m_pSPICtrlDevice->write(ctrlBA) == ctrlBA.size());
+    int written;
+
+    written = m_pSPICtrlDevice->write(ctrlBA);
+    return (written == ctrlBA.size());
 }
