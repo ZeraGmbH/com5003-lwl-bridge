@@ -25,7 +25,16 @@ bool cSPIConnection::writeSPI(QByteArray &Output, quint32 OutputAdress, qint32 l
     {
         // we could send the adress information
         // let's send data now
-        ret = (m_pSPIDataDevice->write(dataBA) == dataBA.size());
+        // also a little bit complicated
+
+        QByteArray ba(2,0);
+        char *data = dataBA.data();
+
+        for (int i = 0; i < len; i++,data++)
+        {
+            ba.replace(1,1,data); // pos, len, pointer
+            m_pSPIDataDevice->write(ba);
+        }
     }
 
     return ret;
@@ -41,11 +50,16 @@ bool cSPIConnection::readSPI(QByteArray &Input, quint32 InputAdress, qint32 len)
     {
         // we could send the adress information
         // let's read data now
-        int read;
-        Input = m_pSPIDataDevice->read(len);
-        read = Input.size();
+        // a little bit complicated
 
-        ret = (read == len);
+        QByteArray ba;
+        Input.clear();
+
+        for (int i = 0; i < len; i++)
+        {
+            ba = m_pSPIDataDevice->read(2);
+            Input.append(ba[1]);
+        }
     }
 
     return ret;
