@@ -11,8 +11,8 @@ public:
     cSPIConnection(QSPIDevice *spictrldev, QSPIDevice *spidatadev);
     ~cSPIConnection(){}
 
-    bool writeSPI(QByteArray& Output, quint32 OutputAdress, quint32 len);
-    bool readSPI(QByteArray& Input, quint32 InputAdress, quint32 len);
+    bool writeSPI(QByteArray& Output, quint32 OutputAdress, qint32 len);
+    bool readSPI(QByteArray& Input, quint32 InputAdress, qint32 len);
 
 private:
     QSPIDevice *m_pSPICtrlDevice;
