@@ -196,9 +196,9 @@ void cLWLConnection::writeLWLOutput(int len)
 
 void cLWLConnection::readLWLInput()
 {
-    QByteArray *pLWLTestInput = new QByteArray();
+    QByteArray pLWLTestInput;
 
-    if (m_pSPIConnection->readSPI(*pLWLTestInput, lwlInputAdress, lwlInputDataLength))
+    if (m_pSPIConnection->readSPI(pLWLTestInput, lwlInputAdress, lwlInputDataLength))
     {
         quint8 chksum;
         quint8 *lwlData;
@@ -206,7 +206,7 @@ void cLWLConnection::readLWLInput()
         int i;
 
         chksum = 0;
-        lwlData = (quint8*) pLWLTestInput->data();
+        lwlData = (quint8*) pLWLTestInput.data();
 
         for (i = 0; i < lwlInputDataLength-1; i++,lwlData++)
             chksum += lwlData[i];
@@ -229,18 +229,18 @@ void cLWLConnection::readLWLInput()
                 int j;
                 for (j = 0; j < lwlInputDataLength-1; j++) // lets test if we have new data
                 {
-                   if ( (*pLWLTestInput)[j] != lwlInput.at(j) )
+                   if ( (pLWLTestInput)[j] != lwlInput.at(j) )
                        break;
                 }
 
                 if (j < lwlInputDataLength) // if we encountered 1 different byte then data has changed
                 {
-                    lwlInput = *pLWLTestInput;
+                    lwlInput = pLWLTestInput;
                     QByteArray ba;
                     ba.append(~lwlData[i]);
-                    pLWLTestInput->replace(lwlInputDataLength, 1, ba);
+                    pLWLTestInput.replace(lwlInputDataLength, 1, ba);
                     setDisconnectCount();
-                    m_pSPIConnection->writeSPI(*pLWLTestInput, lwlInputAdress, lwlInputDataLength); // we make chksum invalid
+                    m_pSPIConnection->writeSPI(pLWLTestInput, lwlInputAdress, lwlInputDataLength); // we make chksum invalid
                     emit dataAvail(); // we only send signal if new data is avail
                 }
             }
@@ -248,14 +248,12 @@ void cLWLConnection::readLWLInput()
         else
             if (dataValid)
             {
-                lwlInput = *pLWLTestInput;
+                lwlInput = pLWLTestInput;
                 setDisconnectCount();
                 m_bconnected = true;
                 emit connected();
             }
     }
-
-    delete pLWLTestInput;
 }
 
 
