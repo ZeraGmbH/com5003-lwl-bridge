@@ -41,7 +41,9 @@ bool cSPIConnection::readSPI(QByteArray &Input, quint32 InputAdress, quint32 len
     {
         // we could send the adress information
         // let's read data now
-        ret = m_pSPIDataDevice->read(Input.data(), len);
+        int read;
+        read = m_pSPIDataDevice->read(Input.data(), len);
+        ret = (read == len);
     }
 
     return ret;
