@@ -143,7 +143,7 @@ void cBridge::bridgeConfigurationDone()
         return;
     }
 
-    if(!m_pSPICtrlDevice->setBitsPerWord(40))
+    if(!m_pSPICtrlDevice->setBitsPerWord(8))
     {
         bridgeError(-1);
         return;
@@ -174,7 +174,7 @@ void cBridge::bridgeConfigurationDone()
         return;
     }
 
-    if(!m_pSPIDataDevice->setBitsPerWord(16))
+    if(!m_pSPIDataDevice->setBitsPerWord(8))
     {
         bridgeError(-1);
         return;
@@ -301,6 +301,7 @@ void cBridge::bridgeActiveInit()
     cmdList.append(QString("conf:pow1:tint %1\n;").arg(m_pBridgeConfigData->m_nIntegrationtime));
     cmdList.append(QString("conf:pow2:tint %1\n;").arg(m_pBridgeConfigData->m_nIntegrationtime));
     cmdList.append(QString("conf:pow3:tint %1\n;").arg(m_pBridgeConfigData->m_nIntegrationtime));
+    cmdList.append(QString("conf:pow4:tint %1\n;").arg(m_pBridgeConfigData->m_nIntegrationtime));
 
     parameterDelegate->setCmdList(cmdList);
 
