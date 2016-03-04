@@ -174,7 +174,7 @@ void cBridge::bridgeConfigurationDone()
         return;
     }
 
-    if(!m_pSPIDataDevice->setBitsPerWord(8))
+    if(!m_pSPIDataDevice->setBitsPerWord(16))
     {
         bridgeError(-1);
         return;
