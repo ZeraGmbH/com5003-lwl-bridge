@@ -33,7 +33,7 @@ enum lwlDataPositions
     IBCode = 1,
     MMCode = 2,
     AngleRefCode = 3,
-    OsciCmd = 29
+    OsciCmd = 28
 };
 
 class cSPIConnection;
