@@ -198,6 +198,7 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveState = new QState();
 
     m_pBridgeActiveInitState = new QState(m_pBridgeActiveState);
+    m_pBridgeActiveInitDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveMeasureStartState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveMeasureDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeStartState = new QState(m_pBridgeActiveState);
@@ -214,7 +215,8 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeETHConnectedState->addTransition(m_pLWLConnection, SIGNAL(connected()), m_pBridgeActiveState);
     m_pBridgeActiveState->addTransition(m_pLWLConnection, SIGNAL(disconnected()), m_pBridgeETHConnectedState);
     m_pBridgeActiveState->addTransition(m_pETHConnection, SIGNAL(disconnected()), m_pBridgeLWLConnectedState);
-    m_pBridgeActiveInitState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureStartState);
+    m_pBridgeActiveInitState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveInitDoneState);
+    m_pBridgeActiveInitDoneState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureStartState);
     m_pBridgeActiveMeasureStartState->addTransition(measureDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureDoneState);
     m_pBridgeActiveMeasureDoneState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
     m_pBridgeActiveMeasureDoneState->addTransition(this, SIGNAL(startOscilloscope()), m_pBridgeActiveOscilloscopeStartState);
@@ -311,6 +313,11 @@ void cBridge::bridgeActiveInit()
     oscilloscopeDelegate->setSocket(m_pSocket);
 
     m_pCmdSerializer->execute(parameterDelegate);
+}
+
+
+void cBridge::bridgeActiveInitDone()
+{
     // we got lwlconnected and eth connected so
     bridgeLWLCommand(); // once we call from here, later we get a signal each time lwl data has changed
 }
