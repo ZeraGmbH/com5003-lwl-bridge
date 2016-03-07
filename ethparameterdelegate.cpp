@@ -35,8 +35,9 @@ void cETHParameterDelegate::receiveAnswer()
         }
             // todo emit some error here
 
-        emit finished();
+
     }
 
+    emit finished();
     disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
 }
