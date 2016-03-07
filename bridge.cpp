@@ -235,6 +235,7 @@ void cBridge::bridgeConfigurationDone()
     connect(m_pBridgeIdleState, SIGNAL(entered()), SLOT(bridgeIdle()));
     connect(m_pBridgeActiveState, SIGNAL(exited()), SLOT(bridgeInactive()));
     connect(m_pBridgeActiveInitState, SIGNAL(entered()), SLOT(bridgeActiveInit()));
+    connect(m_pBridgeActiveInitDoneState, SIGNAL(entered()), SLOT(bridgeActiveInitDone()));
     connect(m_pBridgeLWLConnectedState, SIGNAL(entered()), SLOT(bridgeLWLConnected()));
     connect(m_pBridgeETHConnectedState, SIGNAL(entered()), SLOT(bridgeETHConnected()));
     connect(m_pBridgeActiveMeasureStartState, SIGNAL(entered()), SLOT(bridgeActiveMeasureStart()));
