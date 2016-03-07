@@ -311,6 +311,8 @@ void cBridge::bridgeActiveInit()
     oscilloscopeDelegate->setSocket(m_pSocket);
 
     m_pCmdSerializer->execute(parameterDelegate);
+    // we got lwlconnected and eth connected so
+    bridgeLWLCommand(); // once we call from here, later we get a signal each time lwl data has changed
 }
 
 
