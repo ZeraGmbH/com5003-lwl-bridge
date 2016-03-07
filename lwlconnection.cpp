@@ -227,13 +227,16 @@ void cLWLConnection::readLWLInput()
             else
             {
                 int j;
-                for (j = 0; j < lwlInputDataLength-1; j++) // lets test if we have new data
+                int len;
+
+                len = lwlInputDataLength-1; // we test without chksum
+                for (j = 0; j < len; j++) // lets test if we have new data
                 {
                    if ( (pLWLTestInput)[j] != lwlInput.at(j) )
                        break;
                 }
 
-                if (j < lwlInputDataLength) // if we encountered 1 different byte then data has changed
+                if (j < len) // if we encountered 1 different byte then data has changed
                 {
                     lwlInput = pLWLTestInput;
                     QByteArray ba;
