@@ -25,6 +25,7 @@ void cETHCmdSerializer::delegateReady()
         return;
     else
     {
+        delegate =  ethCmdDelegateList.takeFirst(); // we take the next delegate
         connect(delegate, SIGNAL(finished()), this, SLOT(delegateReady()));
         ethCmdDelegateList.at(0)->execute();
     }
