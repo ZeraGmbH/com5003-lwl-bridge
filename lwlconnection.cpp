@@ -208,7 +208,7 @@ void cLWLConnection::readLWLInput()
         chksum = 0;
         lwlData = (quint8*) pLWLTestInput.data();
 
-        for (i = 0; i < lwlInputDataLength-1; i++,lwlData++)
+        for (i = 0; i < lwlInputDataLength-1; i++)
             chksum += lwlData[i];
 
         dataValid = (chksum == lwlData[i]);
