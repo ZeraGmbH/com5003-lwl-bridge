@@ -18,15 +18,15 @@ void cETHCmdSerializer::execute(cETHCmdDelegate *delegate)
 void cETHCmdSerializer::delegateReady()
 {
     cETHCmdDelegate *delegate;
-    delegate =  ethCmdDelegateList.takeFirst();
-    disconnect(delegate, 0, 0, 0);
+    delegate =  ethCmdDelegateList.takeFirst(); // we remove this delegate from list
+    disconnect(delegate, 0, 0, 0); // and disconnect all signals
 
     if (ethCmdDelegateList.isEmpty())
         return;
     else
     {
-        delegate =  ethCmdDelegateList.takeFirst(); // we take the next delegate
+        delegate =  ethCmdDelegateList.first(); // we fetch the next delegate
         connect(delegate, SIGNAL(finished()), this, SLOT(delegateReady()));
-        ethCmdDelegateList.at(0)->execute();
+        delegate->execute();
     }
 }
