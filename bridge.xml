@@ -20,7 +20,7 @@
         </voltagerange>
         <currentrange>
             <n>15</n>
-            <code1>0,160A</code1>
+            <code1>0,200A</code1>
             <code2>1,100A</code2>
             <code3>2,50A</code3>
             <code4>3,25A</code4>

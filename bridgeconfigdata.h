@@ -15,7 +15,7 @@ public:
         {m_sModuleNameList.append(module);m_sMeasmodeNameList.append(mode);}
 
     QStringList m_sModuleNameList;
-    QString m_sMeasmodeNameList;
+    QStringList m_sMeasmodeNameList;
 };
 
 
