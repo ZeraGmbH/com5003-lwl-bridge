@@ -4,8 +4,8 @@
     <referencemeter>
         <ip>192.168.7.222</ip>
         <port>6320</port>
-        <spictrl>/dev/spidev1.0</spictrl>
-        <spidata>/dev/spidev2.0</spidata>
+        <spictrl>/dev/spidev2.0</spictrl>
+        <spidata>/dev/spidev1.0</spidata>
         <rangeauto>0</rangeauto>
         <grouping>1</grouping>
         <integrationtime>1</integrationtime>

@@ -156,7 +156,7 @@ void cBridge::bridgeConfigurationDone()
         return;
     }
 
-    if (!m_pSPIDataDevice->setBitSpeed(50000000)) // see BB-SPIDEVx-00A0.dts
+    if (!m_pSPIDataDevice->setBitSpeed(16000000)) // see BB-SPIDEVx-00A0.dts
     {
         bridgeError(-1);
         return;
