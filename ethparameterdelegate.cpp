@@ -41,6 +41,7 @@ void cETHParameterDelegate::receiveAnswer()
 
     }
 
-    emit finished();
     disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
+
+    emit finished();
 }
