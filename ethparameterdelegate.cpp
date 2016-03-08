@@ -32,6 +32,9 @@ void cETHParameterDelegate::receiveAnswer()
         bool ok;
 
         answer = QString(m_pSocket->readLine());
+        answer.remove('\n');
+        answer.remove(('+');
+
         rm = answer.toInt(&ok);
         if ( ((rm & 4) !=0) || !ok )
         {
