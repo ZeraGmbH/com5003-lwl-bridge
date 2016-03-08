@@ -299,7 +299,7 @@ void cBridge::bridgeActiveInit()
 
     cmdList.append(QString("conf:rng1:rng %1;\n").arg(m_pBridgeConfigData->m_bRangeAuto));
     cmdList.append(QString("conf:rng1:gro %1;\n").arg(m_pBridgeConfigData->m_bGrouping));
-    cmdList.append(QString("conf:rms1:tint %1;n").arg(m_pBridgeConfigData->m_nIntegrationtime));
+    cmdList.append(QString("conf:rms1:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
     cmdList.append(QString("conf:dft1:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
     cmdList.append(QString("conf:pow1:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
     cmdList.append(QString("conf:pow2:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
