@@ -24,6 +24,9 @@
 cBridge::cBridge()
 {
     m_bActive = false;
+    m_bOscilloscopeCmd = false;
+    m_bParameterCmd =false;
+
     m_pBridgeConfiguration = new cBridgeConfiguration();
 
     m_pBridgeConfigStateMachine = new QStateMachine();
@@ -76,6 +79,8 @@ cBridge::~cBridge()
     {
         delete m_pBridgeActiveMeasureStartState;
         delete m_pBridgeActiveMeasureDoneState;
+        delete m_pBridgeActiveParameterStartState;
+        delete m_pBridgeActiveParameterDoneState;
         delete m_pBridgeActiveOscilloscopeStartState;
         delete m_pBridgeActiveOscilloscopeDoneState;
         delete m_pBridgeActiveOscilloscopeSyncState;
@@ -200,6 +205,8 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveInitDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveMeasureStartState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveMeasureDoneState = new QState(m_pBridgeActiveState);
+    m_pBridgeActiveParameterStartState = new QState(m_pBridgeActiveState);
+    m_pBridgeActiveParameterDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeStartState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeSyncState = new QState(m_pBridgeActiveState);
@@ -218,7 +225,10 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveInitDoneState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureStartState);
     m_pBridgeActiveMeasureStartState->addTransition(measureDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureDoneState);
     m_pBridgeActiveMeasureDoneState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
-    m_pBridgeActiveMeasureDoneState->addTransition(this, SIGNAL(startOscilloscope()), m_pBridgeActiveOscilloscopeStartState);
+    m_pBridgeActiveMeasureDoneState->addTransition(this, SIGNAL(startParameter()), m_pBridgeActiveParameterStartState);
+    m_pBridgeActiveParameterStartState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveParameterDoneState);
+    m_pBridgeActiveParameterDoneState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
+    m_pBridgeActiveParameterDoneState->addTransition(this, SIGNAL(startOscilloscope()), m_pBridgeActiveOscilloscopeStartState);
     m_pBridgeActiveOscilloscopeStartState->addTransition(oscilloscopeDelegate, SIGNAL(finished()), m_pBridgeActiveOscilloscopeDoneState);
     m_pBridgeActiveOscilloscopeDoneState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
     m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
@@ -239,6 +249,8 @@ void cBridge::bridgeConfigurationDone()
     connect(m_pBridgeETHConnectedState, SIGNAL(entered()), SLOT(bridgeETHConnected()));
     connect(m_pBridgeActiveMeasureStartState, SIGNAL(entered()), SLOT(bridgeActiveMeasureStart()));
     connect(m_pBridgeActiveMeasureDoneState, SIGNAL(entered()), SLOT(bridgeActiveMeasureDone()));
+    connect(m_pBridgeActiveParameterStartState, SIGNAL(entered()), SLOT(bridgeActiveParameterStart()));
+    connect(m_pBridgeActiveParameterDoneState, SIGNAL(entered()), SLOT(bridgeActiveParameterDone()));
     connect(m_pBridgeActiveOscilloscopeStartState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeStart()));
     connect(m_pBridgeActiveOscilloscopeDoneState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeDone()));
     connect(m_pBridgeActiveOscilloscopeSyncState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeSync()));
@@ -255,6 +267,7 @@ void cBridge::bridgeInactive()
 {
     m_bActive = false;
     m_bOscilloscopeCmd = false;
+    m_bParameterCmd = false;
     m_pBridgeStateMachine->stop();
 }
 
@@ -292,7 +305,6 @@ void cBridge::bridgeActiveInit()
     // we have to set some default values , info about these comes from xml config file
 
     m_bActive = true;
-    m_bOscilloscopeCmd = false;
 
     QList<QString> cmdList;
 
@@ -316,7 +328,8 @@ void cBridge::bridgeActiveInitDone()
     qDebug() << "Bridge active done state entered";
 #endif
     // we got lwlconnected and eth connected so
-    bridgeLWLCommand(); // once we call from here, later we get a signal each time lwl data has changed
+    setParameterCommands(); // once we call from here, later we get a signal each time lwl data has changed
+    parameterDelegate->execute();
 }
 
 
@@ -325,6 +338,13 @@ void cBridge::bridgeLWLCommand()
     // we have to read data from lwlconnection
     // derive some commands from data and send them to the reference meter
 
+    setParameterCommands();
+    m_bParameterCmd = true;
+}
+
+
+void cBridge::setParameterCommands()
+{
     QByteArray lwlInput;
 
     lwlInput = m_pLWLConnection->getLWLInput();
@@ -342,7 +362,6 @@ void cBridge::bridgeLWLCommand()
     measureDelegate->setAngleReference(lwlInput[AngleRefCode]);
 
     parameterDelegate->setCmdList(cmdList);
-    parameterDelegate->execute();
 
     int osciChannel = lwlInput[OsciCmd];
 
@@ -363,6 +382,25 @@ void cBridge::bridgeActiveMeasureStart()
 void cBridge::bridgeActiveMeasureDone()
 {
     m_pLWLConnection->sendActualValues(measureDelegate->getActualValues());
+    if (m_bParameterCmd)
+    {
+        m_bParameterCmd = false;
+        emit startParameter();
+    }
+
+    else
+       emit startMeasurement();
+}
+
+
+void cBridge::bridgeActiveParameterStart()
+{
+    parameterDelegate->execute();
+}
+
+
+void cBridge::bridgeActiveParameterDone()
+{
     if (m_bOscilloscopeCmd)
     {
         m_bOscilloscopeCmd = false;

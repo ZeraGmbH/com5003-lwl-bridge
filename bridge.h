@@ -48,6 +48,7 @@ public:
 
 signals:
     void startMeasurement();
+    void startParameter();
     void startOscilloscope();
     void syncFG301();
     void error(int);
@@ -55,6 +56,8 @@ signals:
 private:
     bool m_bActive;
     bool m_bOscilloscopeCmd;
+    bool m_bParameterCmd;
+
     cBridgeConfiguration *m_pBridgeConfiguration;
     cBridgeConfigData *m_pBridgeConfigData;
 
@@ -85,6 +88,8 @@ private:
     QState *m_pBridgeActiveInitDoneState;
     QState *m_pBridgeActiveMeasureStartState;
     QState *m_pBridgeActiveMeasureDoneState;
+    QState *m_pBridgeActiveParameterStartState;
+    QState *m_pBridgeActiveParameterDoneState;
     QState *m_pBridgeActiveOscilloscopeStartState;
     QState *m_pBridgeActiveOscilloscopeDoneState;
     QState *m_pBridgeActiveOscilloscopeSyncState;
@@ -101,11 +106,14 @@ private slots:
     void bridgeActiveInitDone();
     void bridgeActiveMeasureStart();
     void bridgeActiveMeasureDone();
+    void bridgeActiveParameterStart();
+    void bridgeActiveParameterDone();
     void bridgeActiveOscilloscopeStart();
     void bridgeActiveOscilloscopeDone();
     void bridgeActiveOscilloscopeSync();
 
     void bridgeLWLCommand();
+    void setParameterCommands();
 
 
 
