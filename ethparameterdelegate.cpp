@@ -16,7 +16,10 @@ void cETHParameterDelegate::execute()
 {
     connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
     for (int i = 0; i < m_sCmdList.count(); i++)
+    {
         m_pSocket->write(m_sCmdList.at(i).toLatin1());
+        m_pSocket->flush();
+    }
 }
 
 
