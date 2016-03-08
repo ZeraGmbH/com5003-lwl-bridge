@@ -12,10 +12,9 @@ class cETHCmdDelegate: public QObject
     Q_OBJECT
 
 public:
-    cETHCmdDelegate(){}
+    cETHCmdDelegate(QTcpSocket *socket);
     virtual ~cETHCmdDelegate(){}
 
-    virtual void setSocket(QTcpSocket * socket);
     virtual void execute() = 0;
 
 signals:

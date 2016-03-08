@@ -4,7 +4,8 @@
 #include "ethoscilloscopedelegate.h"
 
 
-cETHOscilloscopeDelegate::cETHOscilloscopeDelegate()
+cETHOscilloscopeDelegate::cETHOscilloscopeDelegate(QTcpSocket *socket)
+    :cETHCmdDelegate(socket)
 {
     m_fVoltageRange = 480.0; // default settings
     m_fCurrentRange = 160.0;

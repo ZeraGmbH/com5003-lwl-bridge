@@ -187,9 +187,9 @@ void cBridge::bridgeConfigurationDone()
 
     m_pSocket = m_pETHConnection->getSocket();
 
-    parameterDelegate = new cETHParameterDelegate();
-    measureDelegate = new cETHMeasureDelegate();
-    oscilloscopeDelegate = new cETHOscilloscopeDelegate;
+    parameterDelegate = new cETHParameterDelegate(m_pSocket);
+    measureDelegate = new cETHMeasureDelegate(m_pSocket);
+    oscilloscopeDelegate = new cETHOscilloscopeDelegate(m_pSocket);
 
     m_pBridgeStateMachine = new QStateMachine();
     m_pBridgeIdleState = new QState();
@@ -287,7 +287,7 @@ void cBridge::bridgeETHConnected()
 void cBridge::bridgeActiveInit()
 {    
 #ifdef DEBUG
-    qDebug() << "Bridge active state entered";
+    qDebug() << "Bridge active init state entered";
 #endif
 
     // we have to set some default values , info about these comes from xml config file
@@ -308,17 +308,15 @@ void cBridge::bridgeActiveInit()
 
     parameterDelegate->setCmdList(cmdList);
 
-    // each time bridge becomes active we must set the socket for all delegates
-    parameterDelegate->setSocket(m_pSocket);
-    measureDelegate->setSocket(m_pSocket);
-    oscilloscopeDelegate->setSocket(m_pSocket);
-
     m_pCmdSerializer->execute(parameterDelegate);
 }
 
 
 void cBridge::bridgeActiveInitDone()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge active done state entered";
+#endif
     // we got lwlconnected and eth connected so
     bridgeLWLCommand(); // once we call from here, later we get a signal each time lwl data has changed
 }

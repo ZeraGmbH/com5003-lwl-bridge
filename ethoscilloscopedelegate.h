@@ -12,7 +12,7 @@ class cETHOscilloscopeDelegate: public cETHCmdDelegate
 {
     Q_OBJECT
 public:
-    cETHOscilloscopeDelegate();
+    cETHOscilloscopeDelegate(QTcpSocket *socket);
     virtual ~cETHOscilloscopeDelegate();
 
     virtual void execute();

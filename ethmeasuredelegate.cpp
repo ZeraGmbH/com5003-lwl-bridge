@@ -5,7 +5,8 @@
 #include "ethmeasuredelegate.h"
 
 
-cETHMeasureDelegate::cETHMeasureDelegate()
+cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
+    :cETHCmdDelegate(socket)
 {
     // we init the meas command list once
     m_sCmdList.append(QString("meas:rms1?\n"));

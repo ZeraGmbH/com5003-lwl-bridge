@@ -11,7 +11,7 @@ class cETHParameterDelegate: public cETHCmdDelegate
     Q_OBJECT
 
 public:
-    cETHParameterDelegate(){}
+    cETHParameterDelegate(QTcpSocket *socket);
     virtual ~cETHParameterDelegate(){}
 
     virtual void setCmdList(QList<QString> sl);

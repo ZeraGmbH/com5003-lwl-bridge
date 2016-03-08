@@ -3,6 +3,11 @@
 #include "ethparameterdelegate.h"
 
 
+cETHParameterDelegate::cETHParameterDelegate(QTcpSocket *socket)
+    :cETHCmdDelegate(socket)
+{
+}
+
 void cETHParameterDelegate::setCmdList(QList<QString> sl)
 {
     m_sCmdList = QList<QString>(sl);

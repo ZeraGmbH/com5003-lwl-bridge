@@ -11,7 +11,7 @@ class cETHMeasureDelegate: public cETHCmdDelegate
 {
     Q_OBJECT
 public:
-    cETHMeasureDelegate();
+    cETHMeasureDelegate(QTcpSocket *socket);
     virtual ~cETHMeasureDelegate();
 
     virtual void execute();

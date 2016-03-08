@@ -37,8 +37,8 @@ SOURCES += main.cpp \
     ethparameterdelegate.cpp \
     ethmeasuredelegate.cpp \
     ethoscilloscopedelegate.cpp \
-    ethcmddelegate.cpp \
-    spiconnection.cpp
+    spiconnection.cpp \
+    ethcmddelegate.cpp
 
 HEADERS += \
     bridgeconfigdata.h \
