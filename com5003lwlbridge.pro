@@ -33,7 +33,6 @@ SOURCES += main.cpp \
     lwlconnection.cpp \
     bridge.cpp \
     ethconnection.cpp \
-    ethcmdserializer.cpp \
     ethparameterdelegate.cpp \
     ethmeasuredelegate.cpp \
     ethoscilloscopedelegate.cpp \
@@ -47,7 +46,6 @@ HEADERS += \
     bridge.h \
     ethconnection.h \
     ethcmddelegate.h \
-    ethcmdserializer.h \
     ethparameterdelegate.h \
     ethmeasuredelegate.h \
     ethoscilloscopedelegate.h \

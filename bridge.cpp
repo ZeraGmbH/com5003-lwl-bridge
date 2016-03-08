@@ -183,7 +183,6 @@ void cBridge::bridgeConfigurationDone()
     m_pSPIConnection = new cSPIConnection(m_pSPICtrlDevice, m_pSPIDataDevice);
     m_pLWLConnection = new cLWLConnection(m_pSPIConnection);
     m_pETHConnection = new cETHConnection(m_pBridgeConfigData);
-    m_pCmdSerializer = new cETHCmdSerializer();
 
     m_pSocket = m_pETHConnection->getSocket();
 
@@ -307,8 +306,7 @@ void cBridge::bridgeActiveInit()
     cmdList.append(QString("conf:pow4:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
 
     parameterDelegate->setCmdList(cmdList);
-
-    m_pCmdSerializer->execute(parameterDelegate);
+    parameterDelegate->execute();
 }
 
 
@@ -344,7 +342,7 @@ void cBridge::bridgeLWLCommand()
     measureDelegate->setAngleReference(lwlInput[AngleRefCode]);
 
     parameterDelegate->setCmdList(cmdList);
-    m_pCmdSerializer->execute(parameterDelegate);
+    parameterDelegate->execute();
 
     int osciChannel = lwlInput[OsciCmd];
 
@@ -358,7 +356,7 @@ void cBridge::bridgeLWLCommand()
 
 void cBridge::bridgeActiveMeasureStart()
 {
-    m_pCmdSerializer->execute(measureDelegate);
+    measureDelegate->execute();
 }
 
 

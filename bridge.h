@@ -15,7 +15,6 @@ class cLWLConnection;
 class cETHConnection;
 class cBridgeConfiguration;
 class cBridgeConfigData;
-class cETHCmdSerializer;
 class cETHParameterDelegate;
 class cETHMeasureDelegate;
 class cETHOscilloscopeDelegate;
@@ -65,7 +64,6 @@ private:
     QTcpSocket *m_pSocket;
     QSPIDevice *m_pSPICtrlDevice;
     QSPIDevice *m_pSPIDataDevice;
-    cETHCmdSerializer *m_pCmdSerializer;
     cETHParameterDelegate *parameterDelegate;
     cETHMeasureDelegate *measureDelegate;
     cETHOscilloscopeDelegate *oscilloscopeDelegate;

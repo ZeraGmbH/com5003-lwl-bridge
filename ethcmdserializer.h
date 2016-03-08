@@ -17,6 +17,9 @@ public:
 
     void execute(cETHCmdDelegate* delegate);
 
+signals:
+    void finished();
+
 private:
     QList<cETHCmdDelegate*> ethCmdDelegateList;
 
