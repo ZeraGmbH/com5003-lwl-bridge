@@ -144,6 +144,7 @@ void cETHMeasureDelegate::receiveAnswer()
         QString answer;
 
         answer = QString(m_pSocket->readLine());
+        answer.remove('\n');
 
         if (answer == QString("+1"))
         {
