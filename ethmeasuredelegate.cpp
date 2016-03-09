@@ -49,33 +49,33 @@ cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
     m_ActualValuesHash["UB"] = new double;
     m_ActualValuesHash["IB"] = new double;
 
-    m_ActualValuesDecodeHash["rms1:ul1:[V]:"] = m_ActualValuesHash["UL1"];
-    m_ActualValuesDecodeHash["rms1:ul2:[V]:"] = m_ActualValuesHash["UL2"];
-    m_ActualValuesDecodeHash["rms1:ul3:[V]:"] = m_ActualValuesHash["UL3"];
-    m_ActualValuesDecodeHash["rms1:il1:[A]:"] = m_ActualValuesHash["IL1"];
-    m_ActualValuesDecodeHash["rms1:il2:[A]:"] = m_ActualValuesHash["IL2"];
-    m_ActualValuesDecodeHash["rms1:il3:[A]:"] = m_ActualValuesHash["IL3"];
+    m_ActualValuesDecodeHash["RMS1:UL1:[V]:"] = m_ActualValuesHash["UL1"];
+    m_ActualValuesDecodeHash["RMS1:UL2:[V]:"] = m_ActualValuesHash["UL2"];
+    m_ActualValuesDecodeHash["RMS1:UL3:[V]:"] = m_ActualValuesHash["UL3"];
+    m_ActualValuesDecodeHash["RMS1:IL1:[A]:"] = m_ActualValuesHash["IL1"];
+    m_ActualValuesDecodeHash["RMS1:IL2:[A]:"] = m_ActualValuesHash["IL2"];
+    m_ActualValuesDecodeHash["RMS1:IL3:[A]:"] = m_ActualValuesHash["IL3"];
 
-    m_ActualDFTDecodeHash["dft1:ul1:[V]:"] = "WUL1";
-    m_ActualDFTDecodeHash["dft1:ul2:[V]:"] = "WUL2";
-    m_ActualDFTDecodeHash["dft1:ul3:[V]:"] = "WUL3";
-    m_ActualDFTDecodeHash["dft1:il1:[A]:"] = "WIL1";
-    m_ActualDFTDecodeHash["dft1:il2:[A]:"] = "WIL2";
-    m_ActualDFTDecodeHash["dft1:il3:[A]:"] = "WIL3";
+    m_ActualDFTDecodeHash["DFT1:UL1:[V]:"] = "WUL1";
+    m_ActualDFTDecodeHash["DFT1:UL2:[V]:"] = "WUL2";
+    m_ActualDFTDecodeHash["DFT1:UL3:[V]:"] = "WUL3";
+    m_ActualDFTDecodeHash["DFT1:IL1:[A]:"] = "WIL1";
+    m_ActualDFTDecodeHash["DFT1:IL2:[A]:"] = "WIL2";
+    m_ActualDFTDecodeHash["DFT1:IL3:[A]:"] = "WIL3";
 
-    m_ActualValuesDecodeHash["pow1:p1:[W]:"] = m_ActualValuesHash["P1"];
-    m_ActualValuesDecodeHash["pow1:p2:[W]:"] = m_ActualValuesHash["P2"];
-    m_ActualValuesDecodeHash["pow1:p3:[W]:"] = m_ActualValuesHash["P3"];
+    m_ActualValuesDecodeHash["POW1:P1:[W]:"] = m_ActualValuesHash["P1"];
+    m_ActualValuesDecodeHash["POW1:P2:[W]:"] = m_ActualValuesHash["P2"];
+    m_ActualValuesDecodeHash["POW1:P3:[W]:"] = m_ActualValuesHash["P3"];
 
-    m_ActualValuesDecodeHash["pow2:q1:[Var]:"] = m_ActualValuesHash["Q1"];
-    m_ActualValuesDecodeHash["pow2:q2:[Var]:"] = m_ActualValuesHash["Q2"];
-    m_ActualValuesDecodeHash["pow2:q3:[Var]:"] = m_ActualValuesHash["Q3"];
+    m_ActualValuesDecodeHash["POW2:Q1:[Var]:"] = m_ActualValuesHash["Q1"];
+    m_ActualValuesDecodeHash["POW2:Q2:[Var]:"] = m_ActualValuesHash["Q2"];
+    m_ActualValuesDecodeHash["POW2:Q3:[Var]:"] = m_ActualValuesHash["Q3"];
 
-    m_ActualValuesDecodeHash["pow3:s1:[VA]:"] = m_ActualValuesHash["S1"];
-    m_ActualValuesDecodeHash["pow3:s2:[VA]:"] = m_ActualValuesHash["S2"];
-    m_ActualValuesDecodeHash["pow3:s3:[VA]:"] = m_ActualValuesHash["S3"];
+    m_ActualValuesDecodeHash["POW3:S1:[VA]:"] = m_ActualValuesHash["S1"];
+    m_ActualValuesDecodeHash["POW3:S2:[VA]:"] = m_ActualValuesHash["S2"];
+    m_ActualValuesDecodeHash["POW3:S3:[VA]:"] = m_ActualValuesHash["S3"];
 
-    m_ActualValuesDecodeHash["rng1:f:[Hz]:"] = m_ActualValuesHash["F"];
+    m_ActualValuesDecodeHash["RNG1:F:[Hz]:"] = m_ActualValuesHash["F"];
 
     m_sReferenceAngle = "UL1"; // default
 }
@@ -180,6 +180,7 @@ void cETHMeasureDelegate::receiveAnswer()
                     scale = 1.0;
 
                 rngValue = answer.toDouble(&ok) * scale;
+                *(m_ActualValuesHash["IB"]) = rngValue;
             }
         }
 
@@ -200,7 +201,7 @@ void cETHMeasureDelegate::receiveAnswer()
                 pString = sl.at(i);
 
                 pos = pString.lastIndexOf(":");
-                key = pString.leftJustified(pos);
+                key = pString.left(pos);
                 data = pString.remove(key);
 
                 if (m_ActualDFTDecodeHash.contains(key))
