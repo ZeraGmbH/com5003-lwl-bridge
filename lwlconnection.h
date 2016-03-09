@@ -10,7 +10,7 @@ class cSPIConnection;
 
 const quint32 lwlInputAdress = 0x0; // data from fg301 to device
 const quint16 lwlInputDataLength = 63;
-const quint32 lwlOutputAdress = 0x1000; // data from decice to fg301
+const quint32 lwlOutputAdress = 0x800; // data from decice to fg301
 const quint16 lwlOutputDataLength = 1696; // 256 byte actual values + status, and 720 quint16
 
 class cLWLConnection: public QObject
