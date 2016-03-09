@@ -27,12 +27,13 @@ bool cSPIConnection::writeSPI(QByteArray &Output, quint32 OutputAdress, qint32 l
         // let's send data now
         // also a little bit complicated
 
-        QByteArray ba(2,0);
-        char *data = dataBA.data();
+        QByteArray ba;
 
-        for (int i = 0; i < len; i++,data++)
+        for (int i = 0; i < len; i++)
         {
-            ba.replace(1,1,data); // pos, len, pointer
+            ba.clear();
+            ba.append(char(0));
+            ba.append(dataBA[i]);
             m_pSPIDataDevice->write(ba);
         }
     }
