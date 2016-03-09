@@ -198,11 +198,11 @@ void cETHMeasureDelegate::receiveAnswer()
                 int pos;
                 bool ok;
 
-                pString = sl.at(i);
+                data = pString = sl.at(i);
 
                 pos = pString.lastIndexOf(":");
                 key = pString.left(pos+1);
-                data = pString.remove(key);
+                data = data.remove(key);
 
                 if (m_ActualDFTDecodeHash.contains(key))
                 {
