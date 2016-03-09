@@ -44,7 +44,7 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
 
     int pos = 0;
 
-    s = QString("%1").arg(0.0, 8, 'g', 3); // dc values = 0
+    s = QString("%1").arg(0.0, 8, 'f', 3); // dc values = 0
     for (int i = 0; i < 6; i++, pos+=8)
         lwlOutput.replace(pos, 8, s.toLatin1());
 
@@ -52,35 +52,35 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
 
     for (int i = 0; i < voltRMSList.count(); i++, pos+=8)
     {
-        s = QString("%1").arg(*(actualValuesHash[voltRMSList.at(i)]), 8, 'g', 3);
+        s = QString("%1").arg(*(actualValuesHash[voltRMSList.at(i)]), 8, 'f', 3);
         lwlOutput.replace(pos, 8, s.toLatin1());
     }
 
     QList<QString> currentRMSList{"IL1", "IL2", "IL3"};
     for (int i = 0; i < currentRMSList.count(); i++, pos+=10)
     {
-        s = QString("%1").arg(*(actualValuesHash[currentRMSList.at(i)]), 10, 'g', 5);
+        s = QString("%1").arg(*(actualValuesHash[currentRMSList.at(i)]), 10, 'f', 5);
         lwlOutput.replace(pos, 10, s.toLatin1());
     }
 
     QList<QString> angleList{"WUL1", "WUL2", "WUL3","WIL1", "WIL2", "WIL3"};
     for (int i = 0; i < angleList.count(); i++, pos+=6)
     {
-        s = QString("%1").arg(*(actualValuesHash[angleList.at(i)]), 6, 'g', 2);
+        s = QString("%1").arg(*(actualValuesHash[angleList.at(i)]), 6, 'f', 2);
         lwlOutput.replace(pos, 6, s.toLatin1());
     }
 
     QList<QString> actPowerList{"P1", "P2", "P3"};
     for (int i = 0; i < actPowerList.count(); i++, pos+=12)
     {
-        s = QString("%1").arg(*(actualValuesHash[actPowerList.at(i)]), 12, 'g', 5);
+        s = QString("%1").arg(*(actualValuesHash[actPowerList.at(i)]), 12, 'f', 5);
         lwlOutput.replace(pos, 12, s.toLatin1());
     }
 
     QList<QString> reactPowerList{"Q1", "Q2", "Q3"};
     for (int i = 0; i < reactPowerList.count(); i++, pos+=12)
     {
-        s = QString("%1").arg(*(actualValuesHash[reactPowerList.at(i)]), 12, 'g', 5);
+        s = QString("%1").arg(*(actualValuesHash[reactPowerList.at(i)]), 12, 'f', 5);
         lwlOutput.replace(pos, 12, s.toLatin1());
     }
 
@@ -88,7 +88,7 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     for (int i = 0; i < actPowerList.count(); i++)
         PS += *(actualValuesHash[actPowerList.at(i)]);
 
-    lwlOutput.replace(pos, 12, QString("%1").arg(PS, 12, 'g', 5).toLatin1());
+    lwlOutput.replace(pos, 12, QString("%1").arg(PS, 12, 'f', 5).toLatin1());
     pos+=12;
 
     double QS = 0.0;
@@ -96,23 +96,23 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     for (int i = 0; i < reactPowerList.count(); i++)
         QS += *(actualValuesHash[reactPowerList.at(i)]);
 
-    lwlOutput.replace(pos, 12, QString("%1").arg(QS, 12, 'g', 5).toLatin1());
+    lwlOutput.replace(pos, 12, QString("%1").arg(QS, 12, 'f', 5).toLatin1());
     pos+=12;
 
-    lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["F"]), 6, 'g', 2).toLatin1());
+    lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["F"]), 6, 'f', 2).toLatin1());
     pos+=6;
 
-    lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["UB"]), 6, 'g', 2).toLatin1());
+    lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["UB"]), 6, 'f', 2).toLatin1());
     pos+=6;
 
     if ( (*(actualValuesHash["IB"]) < 1.0))
     {
-        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'g', 3);
+        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3);
         lwlOutput.replace(pos, 6, s.toLatin1());
     }
     else
     {
-        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'g', 2);
+        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 2);
         lwlOutput.replace(pos, 6, s.toLatin1());
     }
     pos+=6;
@@ -133,7 +133,7 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     QList<QString> appPowerList{"S1", "S2", "S3"};
     for (int i = 0; i < appPowerList.count(); i++, pos+=12)
     {
-        s = QString("%1").arg(*(actualValuesHash[appPowerList.at(i)]), 12, 'g', 5);
+        s = QString("%1").arg(*(actualValuesHash[appPowerList.at(i)]), 12, 'f', 5);
         lwlOutput.replace(pos, 12, s.toLatin1());
     }
 
@@ -142,7 +142,7 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     for (int i = 0; i < appPowerList.count(); i++)
         SS += *(actualValuesHash[appPowerList.at(i)]);
 
-    lwlOutput.replace(pos, 12, QString("%1").arg(SS, 12, 'g', 5).toLatin1());
+    lwlOutput.replace(pos, 12, QString("%1").arg(SS, 12, 'f', 5).toLatin1());
     pos+=12; // should be 304 now
 
     appendChksum(304);
