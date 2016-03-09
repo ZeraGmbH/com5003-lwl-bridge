@@ -27,6 +27,8 @@ private:
     QHash<QString, double*> m_ActualValuesDecodeHash;
     QHash<QString, QString> m_ActualDFTDecodeHash;
     QString m_sReferenceAngle;
+
+    quint8 m_nAnswerCount;
 };
 
 #endif // ETHMEASUREDELEGATE

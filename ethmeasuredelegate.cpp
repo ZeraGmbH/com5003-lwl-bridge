@@ -17,7 +17,6 @@ cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
     m_sCmdList.append(QString("meas:rng1:f?\n"));
     m_sCmdList.append(QString("sens:rng1:ul1:rang?\n")); // we handle the range queries at the same time as measurement
     m_sCmdList.append(QString("sens:rng1:il1:rang?\n"));
-    m_sCmdList.append(QString("*opc?\n"));
 
     // a hash holds our actual values or intermediate values;
 
@@ -101,6 +100,8 @@ void cETHMeasureDelegate::execute()
 {
     // we send all needed commands at once
     connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
+    m_nAnswerCount = m_sCmdList.count();
+
     for (int i = 0; i < m_sCmdList.count(); i++)
     {
         m_pSocket->write(m_sCmdList.at(i).toLatin1());
@@ -150,9 +151,79 @@ void cETHMeasureDelegate::receiveAnswer()
         answer = QString(m_pSocket->readLine());
         answer.remove('\n');
 
-        if (answer == QString("+1"))
+        if (answer.count(';') == 0)
         {
-            // it was the answer to the last last command (opc)
+            // so we have an answer to voltage or current range query
+
+            double rngValue;
+            bool ok;
+
+            if (answer.count('V') > 0)
+            {
+                answer.replace("V","");
+                rngValue = answer.toDouble(&ok);
+                *(m_ActualValuesHash["UB"]) = rngValue;
+            }
+
+            else
+
+            {
+                double scale;
+
+                answer.replace("A","");
+                if (answer.contains('m') > 0)
+                {
+                    answer.replace("m","");
+                    scale = 0.001;
+                }
+                else
+                    scale = 1.0;
+
+                rngValue = answer.toDouble(&ok) * scale;
+            }
+        }
+
+        else
+
+        {
+            QStringList sl;
+
+            sl = answer.split(';');
+
+            for (int i = 0; i < sl.count(); i++)
+            {
+                QString pString;
+                QString key, data;
+                int pos;
+                bool ok;
+
+                pString = sl.at(i);
+
+                pos = pString.lastIndexOf(":");
+                key = pString.leftJustified(pos);
+                data = pString.remove(key);
+
+                if (m_ActualDFTDecodeHash.contains(key))
+                {
+                    // we have found a key that was expected for a dft value so we have to compute the angle
+                    QStringList sl;
+                    sl = data.split(',');
+                    *(m_ActualValuesDecodeHash[m_ActualDFTDecodeHash[key] ]) = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
+
+                }
+
+                if (m_ActualValuesDecodeHash.contains(key))
+                {
+                    *(m_ActualValuesDecodeHash[key]) = data.toDouble(&ok);
+                }
+            }
+        }
+
+        m_nAnswerCount--;
+
+        if (m_nAnswerCount == 0)
+        {
+            // it was the last answer we were waiting for, let's compute our angles now
             double refAngle;
             refAngle = *m_ActualValuesHash[m_sReferenceAngle];
             *(m_ActualValuesHash["WUL1"]) = *(m_ActualValuesHash["WUL1"]) - refAngle;
@@ -162,76 +233,8 @@ void cETHMeasureDelegate::receiveAnswer()
             *(m_ActualValuesHash["WIL2"]) = *(m_ActualValuesHash["WIL2"]) - refAngle;
             *(m_ActualValuesHash["WIL3"]) = *(m_ActualValuesHash["WIL3"]) - refAngle;
 
-            emit finished();
-        }
-
-        else
-        {
-            if (answer.count(';') == 0)
-            {
-                // so we have an answer to voltage or current range query
-
-                double rngValue;
-                bool ok;
-
-                if (answer.count('V') > 0)
-                {
-                    answer.replace("V","");
-                    rngValue = answer.toDouble(&ok);
-                    *(m_ActualValuesHash["UB"]) = rngValue;
-                }
-                else
-                {
-                    double scale;
-
-                    answer.replace("A","");
-                    if (answer.contains('m') > 0)
-                    {
-                        answer.replace("m","");
-                        scale = 0.001;
-                    }
-                    else
-                        scale = 1.0;
-
-                    rngValue = answer.toDouble(&ok) * scale;
-                }
-            }
-
-            else
-            {
-                QStringList sl;
-
-                sl = answer.split(';');
-
-                for (int i = 0; i < sl.count(); i++)
-                {
-                    QString pString;
-                    QString key, data;
-                    int pos;
-                    bool ok;
-
-                    pString = sl.at(i);
-
-                    pos = pString.lastIndexOf(":");
-                    key = pString.leftJustified(pos);
-                    data = pString.remove(key);
-
-                    if (m_ActualDFTDecodeHash.contains(key))
-                    {
-                        // we have found a key that was expected for a dft value so we have to compute the angle
-                        QStringList sl;
-                        sl = data.split(',');
-                        *(m_ActualValuesDecodeHash[m_ActualDFTDecodeHash[key] ]) = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
-
-                    }
-                    if (m_ActualValuesDecodeHash.contains(key))
-                    {
-                        *(m_ActualValuesDecodeHash[key]) = data.toDouble(&ok);
-                    }
-                }
-            }
+            disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
+            emit finished(); // and throw finished signal
         }
     }
-
-    disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
 }
