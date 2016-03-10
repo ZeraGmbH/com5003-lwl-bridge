@@ -210,14 +210,9 @@ void cETHMeasureDelegate::receiveAnswer()
                 {
                     // we have found a key that was expected for a dft value so we have to compute the angle
                     QStringList sl;
-                    double phi;
 
                     sl = data.split(',');
-                    phi = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
-                    if (phi < 0.0)
-                        phi += 360.0;
-                    *(m_ActualValuesHash[m_ActualDFTDecodeHash[key] ]) = phi;
-
+                    *(m_ActualValuesHash[m_ActualDFTDecodeHash[key] ]) = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
                 }
 
                 if (m_ActualValuesDecodeHash.contains(key))
@@ -232,14 +227,17 @@ void cETHMeasureDelegate::receiveAnswer()
         if (m_nAnswerCount == 0)
         {
             // it was the last answer we were waiting for, let's compute our angles now
-            double refAngle;
+            double angle, refAngle;
             refAngle = *m_ActualValuesHash[m_sReferenceAngle];
-            *(m_ActualValuesHash["WUL1"]) = *(m_ActualValuesHash["WUL1"]) - refAngle;
-            *(m_ActualValuesHash["WUL2"]) = *(m_ActualValuesHash["WUL2"]) - refAngle;
-            *(m_ActualValuesHash["WUL3"]) = *(m_ActualValuesHash["WUL3"]) - refAngle;
-            *(m_ActualValuesHash["WIL1"]) = *(m_ActualValuesHash["WIL1"]) - refAngle;
-            *(m_ActualValuesHash["WIL2"]) = *(m_ActualValuesHash["WIL2"]) - refAngle;
-            *(m_ActualValuesHash["WIL3"]) = *(m_ActualValuesHash["WIL3"]) - refAngle;
+
+            QList<QString> angleList{"WUL1", "WUL2", "WUL3","WIL1", "WIL2", "WIL3"};
+            for (int i = 0; i < angleList.count(); i++)
+            {
+                angle = *(m_ActualValuesHash[angleList.at(i)]) - refAngle;
+                if (angle < 0.0)
+                    angle +=360.0;
+                *(m_ActualValuesHash[angleList.at(i)]) = angle;
+            }
 
             disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
             emit finished(); // and throw finished signal
