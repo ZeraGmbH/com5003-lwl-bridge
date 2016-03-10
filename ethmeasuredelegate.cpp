@@ -120,24 +120,26 @@ void cETHMeasureDelegate::setAngleReference(int index)
 {
     switch (index)
     {
-    case 0:
+    case 1:
         m_sReferenceAngle = "WUL1";
         break;
-    case 1:
+    case 2:
         m_sReferenceAngle = "WUL2";
         break;
-    case 2:
+    case 3:
         m_sReferenceAngle = "WUL3";
         break;
-    case 3:
+    case 4:
         m_sReferenceAngle = "WIL1";
         break;
-    case 4:
+    case 5:
         m_sReferenceAngle = "WIL2";
         break;
-    case 5:
+    case 6:
         m_sReferenceAngle = "WIL3";
         break;
+    default:
+        m_sReferenceAngle = "WUL1";
     }
 }
 
