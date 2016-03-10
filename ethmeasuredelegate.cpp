@@ -210,8 +210,13 @@ void cETHMeasureDelegate::receiveAnswer()
                 {
                     // we have found a key that was expected for a dft value so we have to compute the angle
                     QStringList sl;
+                    double phi;
+
                     sl = data.split(',');
-                    *(m_ActualValuesHash[m_ActualDFTDecodeHash[key] ]) = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
+                    phi = userAtan(sl.at(1).toDouble(&ok), sl.at(0).toDouble(&ok));
+                    if (phi < 0.0)
+                        phi += 360.0;
+                    *(m_ActualValuesHash[m_ActualDFTDecodeHash[key] ]) = phi;
 
                 }
 
