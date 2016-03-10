@@ -5,8 +5,8 @@
 #include "ethmeasuredelegate.h"
 
 
-cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket, int ti)
-    :cETHCmdDelegate(socket), m_nTi(ti)
+cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
+    :cETHCmdDelegate(socket)
 {
     // we init the meas command list once
     m_sCmdList.append(QString("meas:rms1?\n"));
@@ -78,9 +78,6 @@ cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket, int ti)
     m_ActualValuesDecodeHash["RNG1:F:[Hz]:"] = m_ActualValuesHash["F"];
 
     m_sReferenceAngle = "UL1"; // default
-
-    toTimer.setInterval(2*m_nTi*1000);
-    connect(&toTimer, SIGNAL(timeout()), this, SLOT(mValTimeout()));
 }
 
 
@@ -113,8 +110,6 @@ void cETHMeasureDelegate::execute()
             m_pSocket->write(m_sCmdList.at(i).toLatin1());
             m_pSocket->flush();
         }
-
-        toTimer.start();
     }
     else
         emit finished();
@@ -257,9 +252,3 @@ void cETHMeasureDelegate::receiveAnswer()
     }
 }
 
-
-void cETHMeasureDelegate::mValTimeout()
-{
-    disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
-    emit finished(); // and throw finished signal
-}
