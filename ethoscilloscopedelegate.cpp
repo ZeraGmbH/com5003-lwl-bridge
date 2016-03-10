@@ -79,14 +79,12 @@ void cETHOscilloscopeDelegate::receiveAnswer()
     int pos;
     bool ok;
 
-    answer = QString(m_pSocket->readLine());
+    data = answer = QString(m_pSocket->readLine());
     disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
 
     pos = answer.lastIndexOf(":");
-    key = answer.leftJustified(pos);
-    data = answer.remove(key);
-
-    data.replace(";","");
+    key = answer.left(pos+1);
+    data = data.remove(key);
 
     sampleStrings = data.split(',');
 
