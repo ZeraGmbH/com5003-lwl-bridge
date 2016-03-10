@@ -192,7 +192,7 @@ void cBridge::bridgeConfigurationDone()
     m_pSocket = m_pETHConnection->getSocket();
 
     parameterDelegate = new cETHParameterDelegate(m_pSocket);
-    measureDelegate = new cETHMeasureDelegate(m_pSocket);
+    measureDelegate = new cETHMeasureDelegate(m_pSocket, m_pBridgeConfigData->m_nIntegrationtime);
     oscilloscopeDelegate = new cETHOscilloscopeDelegate(m_pSocket);
 
     m_pBridgeStateMachine = new QStateMachine();
@@ -337,7 +337,9 @@ void cBridge::bridgeLWLCommand()
 {
     // we have to read data from lwlconnection
     // derive some commands from data and send them to the reference meter
-
+#ifdef DEBUG
+    qDebug() << "Bridge fg301 lwl command received";
+#endif
     setParameterCommands();
     m_bParameterCmd = true;
 }
@@ -375,12 +377,18 @@ void cBridge::setParameterCommands()
 
 void cBridge::bridgeActiveMeasureStart()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge measure start state entered";
+#endif
     measureDelegate->execute();
 }
 
 
 void cBridge::bridgeActiveMeasureDone()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge measure done state entered";
+#endif
     m_pLWLConnection->sendActualValues(measureDelegate->getActualValues());
     if (m_bParameterCmd)
     {
@@ -395,12 +403,18 @@ void cBridge::bridgeActiveMeasureDone()
 
 void cBridge::bridgeActiveParameterStart()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge parameter start state entered";
+#endif
     parameterDelegate->execute();
 }
 
 
 void cBridge::bridgeActiveParameterDone()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge parameter done state entered";
+#endif
     if (m_bOscilloscopeCmd)
     {
         m_bOscilloscopeCmd = false;
@@ -413,6 +427,9 @@ void cBridge::bridgeActiveParameterDone()
 
 void cBridge::bridgeActiveOscilloscopeStart()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge oscilloscope start state entered";
+#endif
     m_pLWLConnection->sendCmdRecognized(true); // we tell fg301 that we have recognized its command
     oscilloscopeDelegate->execute(); // and do
 }
@@ -420,6 +437,9 @@ void cBridge::bridgeActiveOscilloscopeStart()
 
 void cBridge::bridgeActiveOscilloscopeDone()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge oscilloscope done state entered";
+#endif
     m_pLWLConnection->sendOscillogram(oscilloscopeDelegate->getOscillogram());
     emit syncFG301();
 }
@@ -427,6 +447,9 @@ void cBridge::bridgeActiveOscilloscopeDone()
 
 void cBridge::bridgeActiveOscilloscopeSync()
 {
+#ifdef DEBUG
+    qDebug() << "Bridge oscilloscope sync state entered";
+#endif
     QByteArray &lwlinput = m_pLWLConnection->getLWLInput();
 
     if (lwlinput.at(OsciCmd) > 0)
