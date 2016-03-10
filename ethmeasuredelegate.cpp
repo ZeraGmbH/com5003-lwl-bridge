@@ -102,16 +102,22 @@ cETHMeasureDelegate::~cETHMeasureDelegate()
 void cETHMeasureDelegate::execute()
 {
     // we send all needed commands at once
-    connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
-    m_nAnswerCount = m_sCmdList.count();
 
-    for (int i = 0; i < m_sCmdList.count(); i++)
+    if (m_pSocket->state() == QAbstractSocket::ConnectedState)
     {
-        m_pSocket->write(m_sCmdList.at(i).toLatin1());
-        m_pSocket->flush();
-    }
+        connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
+        m_nAnswerCount = m_sCmdList.count();
 
-    toTimer.start();
+        for (int i = 0; i < m_sCmdList.count(); i++)
+        {
+            m_pSocket->write(m_sCmdList.at(i).toLatin1());
+            m_pSocket->flush();
+        }
+
+        toTimer.start();
+    }
+    else
+        emit finished();
 
 }
 
