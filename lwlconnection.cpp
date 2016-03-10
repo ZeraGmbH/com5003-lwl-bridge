@@ -11,7 +11,7 @@ cLWLConnection::cLWLConnection(cSPIConnection *spiconnection)
 
     m_pLWLLoadTimer = new QTimer(this);
     connect(m_pLWLLoadTimer, SIGNAL(timeout()), this, SLOT(readLWLInput()));
-    m_pLWLLoadTimer->start(100); // our base time for lwl test is 100 ms
+    m_pLWLLoadTimer->start(50); // our base time for lwl test is 50 ms
     lwlOutput.resize(lwlOutputDataLength); // we reserve max. used length
 }
 
@@ -181,7 +181,7 @@ void cLWLConnection::sendCmdRecognized(bool on)
 
 void cLWLConnection::setDisconnectCount()
 {
-    m_nDisconnectCount = 80; // we accept up to 80*50ms before we encounter disconnection
+    m_nDisconnectCount = 40; // we accept up to 40*50ms before we encounter disconnection
 }
 
 
@@ -239,13 +239,15 @@ void cLWLConnection::readLWLInput()
                 if (j < len) // if we encountered 1 different byte then data has changed
                 {
                     lwlInput = pLWLTestInput;
-                    QByteArray ba;
-                    ba.append(~lwlData[i]);
-                    pLWLTestInput.replace(lwlInputDataLength, 1, ba);
-                    setDisconnectCount();
-                    m_pSPIConnection->writeSPI(pLWLTestInput, lwlInputAdress, lwlInputDataLength); // we make chksum invalid
                     emit dataAvail(); // we only send signal if new data is avail
                 }
+
+                // let's set input data invalid so that we can later encouter connection loss
+                QByteArray ba;
+                ba.append(~lwlData[i]);
+                pLWLTestInput.replace(lwlInputDataLength, 1, ba);
+                m_pSPIConnection->writeSPI(pLWLTestInput, lwlInputAdress, lwlInputDataLength); // we make chksum invalid
+                setDisconnectCount();
             }
         }
         else
