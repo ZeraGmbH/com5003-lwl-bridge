@@ -90,7 +90,7 @@ void cETHOscilloscopeDelegate::cmpOscillogram()
 {
     double dTRef = 1.0 / m_fOscillogram.size(); // period is 1.0 / number of samples
     double dTFG301 = 1.0 / 720.0; // dito
-    double tPhase = m_fPhaseAngle * 720.0 / 360.0;
+    double tPhase = m_fPhaseAngle / 360.0;
 
     int len;
     len = m_fOscillogram.count();
