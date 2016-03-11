@@ -18,6 +18,7 @@ public:
     virtual void execute();
     QHash<QString, double*>& getActualValues();
     void setAngleReference(int index);
+    double getActualValue(QString name);
 
 protected slots:
     virtual void receiveAnswer();

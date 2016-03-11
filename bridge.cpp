@@ -193,7 +193,7 @@ void cBridge::bridgeConfigurationDone()
 
     parameterDelegate = new cETHParameterDelegate(m_pSocket);
     measureDelegate = new cETHMeasureDelegate(m_pSocket);
-    oscilloscopeDelegate = new cETHOscilloscopeDelegate(m_pSocket);
+    oscilloscopeDelegate = new cETHOscilloscopeDelegate(m_pSocket, measureDelegate);
 
     m_pBridgeStateMachine = new QStateMachine();
     m_pBridgeIdleState = new QState();

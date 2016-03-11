@@ -151,6 +151,15 @@ void cETHMeasureDelegate::setAngleReference(int index)
 }
 
 
+double cETHMeasureDelegate::getActualValue(QString name)
+{
+    if (m_ActualValuesHash.contains(name))
+        return *(m_ActualValuesHash[name] );
+    else
+        return 1.0;
+}
+
+
 void cETHMeasureDelegate::receiveAnswer()
 {
     while (m_pSocket->canReadLine())
@@ -211,7 +220,7 @@ void cETHMeasureDelegate::receiveAnswer()
 
                 pos = pString.lastIndexOf(":");
                 key = pString.left(pos+1);
-                data = data.remove(key);
+                data.remove(key);
 
                 if (m_ActualDFTDecodeHash.contains(key))
                 {

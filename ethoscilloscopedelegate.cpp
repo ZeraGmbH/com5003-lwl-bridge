@@ -2,15 +2,14 @@
 #include <QTcpSocket>
 
 #include "ethoscilloscopedelegate.h"
+#include "ethmeasuredelegate.h"
 
 
-cETHOscilloscopeDelegate::cETHOscilloscopeDelegate(QTcpSocket *socket)
-    :cETHCmdDelegate(socket)
+cETHOscilloscopeDelegate::cETHOscilloscopeDelegate(QTcpSocket *socket, cETHMeasureDelegate* measDelegate )
+    :cETHCmdDelegate(socket), m_pMeasureDelegate(measDelegate)
 {
-    m_fVoltageRange = 480.0; // default settings
-    m_fCurrentRange = 160.0;
-
-    m_sChannel = "ul1"; // default
+    channelList << "ul1" << "ul2" << "ul3" << "il1" << "il2" << "il3";
+    m_nChannel = 1; // default
 }
 
 
@@ -21,53 +20,40 @@ cETHOscilloscopeDelegate::~cETHOscilloscopeDelegate()
 
 void cETHOscilloscopeDelegate::execute()
 {
+    int index;
+
+    index = m_nChannel - 1;
+
+    switch (index)
+    {
+    case 0:
+    case 1:
+    case 2:
+        m_fNorm = 19275.0 / m_pMeasureDelegate->getActualValue("UB");
+        break;
+    case 3:
+    case 4:
+    case 5:
+        m_fNorm = 18204.0 / m_pMeasureDelegate->getActualValue("IB");
+        break;
+    }
+
+    m_fPhaseAngle = m_pMeasureDelegate->getActualValue(QString("W%1").arg(channelList.at(index).toUpper()));
+
     connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
-    m_pSocket->write(QString("meas:osc1:%1?\n").arg(m_sChannel).toLatin1());
+    m_pSocket->write(QString("meas:osc1:%1?\n").arg(channelList.at(index)).toLatin1());
 }
 
 
 void cETHOscilloscopeDelegate::setChannel(int index)
 {
-    switch (index)
-    {
-    case 0:
-        m_sChannel = "ul1";
-        m_fNorm = 19275.0 / m_fVoltageRange;
-        break;
-    case 1:
-        m_sChannel = "ul2";
-        m_fNorm = 19275.0 / m_fVoltageRange;
-        break;
-    case 2:
-        m_sChannel = "ul3";
-        m_fNorm = 19275.0 / m_fVoltageRange;
-        break;
-    case 3:
-        m_sChannel = "il1";
-        m_fNorm = 18204.0 / m_fCurrentRange;
-        break;
-    case 4:
-        m_sChannel = "il2";
-        m_fNorm = 18204.0 / m_fCurrentRange;
-        break;
-    case 5:
-        m_sChannel = "il3";
-        m_fNorm = 18204.0 / m_fCurrentRange;
-        break;
-    }
+    m_nChannel = index;
 }
 
 
 QVector<quint16> &cETHOscilloscopeDelegate::getOscillogram()
 {
    return m_nOscillogram;
-}
-
-
-void cETHOscilloscopeDelegate::setRange(double vRange, double cRange)
-{
-    m_fVoltageRange = vRange;
-    m_fCurrentRange = cRange;
 }
 
 
@@ -84,7 +70,9 @@ void cETHOscilloscopeDelegate::receiveAnswer()
 
     pos = answer.lastIndexOf(":");
     key = answer.left(pos+1);
-    data = data.remove(key);
+    data.remove(key);
+    data.remove(';');
+    data.remove('\n');
 
     sampleStrings = data.split(',');
 
@@ -100,21 +88,28 @@ void cETHOscilloscopeDelegate::receiveAnswer()
 
 void cETHOscilloscopeDelegate::cmpOscillogram()
 {
-    double dTRef = 1.0 / m_fOscillogram.size();
-    double dTFG301 = 1.0 / 720.0;
+    double dTRef = 1.0 / m_fOscillogram.size(); // period is 1.0 / number of samples
+    double dTFG301 = 1.0 / 720.0; // dito
+    double tPhase = m_fPhaseAngle * 720.0 / 360.0;
+
+    int len;
+    len = m_fOscillogram.count();
+    for (int i = 0; i < len; i++)
+        m_fOscillogram.append(m_fOscillogram.at(i));
+    // we simply doubled the wave length for phase shifting
 
     m_nOscillogram.clear();
 
     for (int i = 0; i < 720; i++)
     {
         double tFG301 = i * dTFG301;
-        double indexD = tFG301 / dTRef;
+        double indexD = (tPhase+tFG301) / dTRef;
         int index = floor(indexD);
 
         double sample = m_fOscillogram.at(index)
                       + (m_fOscillogram.at(index+1) - m_fOscillogram.at(index)) * (indexD - index);
 
-        sample *= m_fNorm; // normalized to voltage or current range * 19275 or 18204 (frieling and otto desolution)
+        sample *= m_fNorm; // normalized to voltage 19275 lsb or current 18204 lsb (frieling and otto desolution)
         m_nOscillogram.append((int)floor(sample +0.5));
     }
 

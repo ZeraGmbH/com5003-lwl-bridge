@@ -8,31 +8,34 @@
 
 #include "ethcmddelegate.h"
 
+class cETHMeasureDelegate;
+
 class cETHOscilloscopeDelegate: public cETHCmdDelegate
 {
     Q_OBJECT
 public:
-    cETHOscilloscopeDelegate(QTcpSocket *socket);
+    cETHOscilloscopeDelegate(QTcpSocket *socket, cETHMeasureDelegate *measDelegate);
     virtual ~cETHOscilloscopeDelegate();
 
     virtual void execute();
     void setChannel(int index);
     QVector<quint16>& getOscillogram();
-    void setRange(double vRange, double cRange);
-
 
 protected slots:
     virtual void receiveAnswer();
 
 private:
-    QString m_sChannel;
+    cETHMeasureDelegate *m_pMeasureDelegate;
+    QList<QString> channelList;
+    int m_nChannel;
     double m_fNorm;
     QVector<double> m_fOscillogram; // the oscillogram read
     QVector<quint16> m_nOscillogram; // the oscillogram for fg301
-    double m_fVoltageRange;
-    double m_fCurrentRange;
+    double m_fPhaseAngle;
 
     void cmpOscillogram();
+
+
 };
 
 #endif // ETHOSCILLOSCOPEDELEGATE
