@@ -1,4 +1,5 @@
 #include <QTcpSocket>
+#include <QAbstractSocket>
 #include <QHostAddress>
 #include <QTimer>
 #include <QString>
@@ -55,5 +56,6 @@ void cETHConnection::regDisconnection()
 void cETHConnection::regError(QAbstractSocket::SocketError err)
 {
     qDebug() << QString("Bridge ethernet connection error %1").arg(err);
-//    try2Connect();
+    Socketst
+    if (m_pSocket->state() != QAbstractSocket::con)   try2Connect();
 }
