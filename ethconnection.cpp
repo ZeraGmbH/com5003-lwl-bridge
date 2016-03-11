@@ -49,6 +49,7 @@ void cETHConnection::regConnection()
 
 void cETHConnection::regDisconnection()
 {
+    try2Connect();
     emit disconnected();
 }
 
