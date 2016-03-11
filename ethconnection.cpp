@@ -56,6 +56,9 @@ void cETHConnection::regDisconnection()
 void cETHConnection::regError(QAbstractSocket::SocketError err)
 {
     qDebug() << QString("Bridge ethernet connection error %1").arg(err);
-    Socketst
-    if (m_pSocket->state() != QAbstractSocket::con)   try2Connect();
+
+    QAbstractSocket::SocketState sockState;
+    sockState = m_pSocket->state();
+    if ((sockState != QAbstractSocket::ConnectingState) && (sockState != QAbstractSocket::ConnectedState))
+        try2Connect();
 }
