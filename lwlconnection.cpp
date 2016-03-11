@@ -156,8 +156,8 @@ void cLWLConnection::sendOscillogram(QVector<qint16> &oscillogram)
     char data[2];
     for (int i = 0; i < 720; i++)
     {
-        data[0] = (oscillogram.at(i) >> 8) & 0xff;
-        data[1] = oscillogram.at(i) & 0xff;
+        data[1] = (oscillogram.at(i) >> 8) & 0xff;
+        data[0] = oscillogram.at(i) & 0xff;
         lwlOutput.replace(256+i*2, 2, &data[0], 2);
     }
     writeLWLOutput(lwlOutputDataLength);
