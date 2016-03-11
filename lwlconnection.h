@@ -24,7 +24,7 @@ public:
     QByteArray& getLWLInput();    
 
     void sendActualValues(QHash<QString, double*> &actualValuesHash);
-    void sendOscillogram(QVector<quint16>& oscillogram);
+    void sendOscillogram(QVector<qint16> &oscillogram);
     void sendCmdRecognized(bool on);
 
 signals:

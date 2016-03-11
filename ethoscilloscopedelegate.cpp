@@ -51,7 +51,7 @@ void cETHOscilloscopeDelegate::setChannel(int index)
 }
 
 
-QVector<quint16> &cETHOscilloscopeDelegate::getOscillogram()
+QVector<qint16> &cETHOscilloscopeDelegate::getOscillogram()
 {
    return m_nOscillogram;
 }

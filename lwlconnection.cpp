@@ -151,7 +151,7 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
 }
 
 
-void cLWLConnection::sendOscillogram(QVector<quint16> &oscillogram)
+void cLWLConnection::sendOscillogram(QVector<qint16> &oscillogram)
 {
     char data[2];
     for (int i = 0; i < 720; i++)

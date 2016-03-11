@@ -19,7 +19,7 @@ public:
 
     virtual void execute();
     void setChannel(int index);
-    QVector<quint16>& getOscillogram();
+    QVector<qint16>& getOscillogram();
 
 protected slots:
     virtual void receiveAnswer();
@@ -30,7 +30,7 @@ private:
     int m_nChannel;
     double m_fNorm;
     QVector<double> m_fOscillogram; // the oscillogram read
-    QVector<quint16> m_nOscillogram; // the oscillogram for fg301
+    QVector<qint16> m_nOscillogram; // the oscillogram for fg301
     double m_fPhaseAngle;
 
     void cmpOscillogram();
