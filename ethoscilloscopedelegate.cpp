@@ -110,7 +110,7 @@ void cETHOscilloscopeDelegate::cmpOscillogram()
                       + (m_fOscillogram.at(index+1) - m_fOscillogram.at(index)) * (indexD - index);
 
         sample *= m_fNorm; // normalized to voltage 19275 lsb or current 18204 lsb (frieling and otto desolution)
-        m_nOscillogram.append((int)floor(sample +0.5));
+        m_nOscillogram.append(floor(sample +0.5));
     }
 
 }
