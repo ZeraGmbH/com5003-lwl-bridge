@@ -367,10 +367,13 @@ void cBridge::setParameterCommands()
 
     int osciChannel = lwlInput[OsciCmd];
 
-    if (osciChannel > 0) // we have to start the oscilloscope now (statemachine)
+    if (!m_bOscilloscopeCmd) // retrigger impossible
     {
-        oscilloscopeDelegate->setChannel(osciChannel);
-        m_bOscilloscopeCmd = true;
+        if (osciChannel > 0) // we have to start the oscilloscope now (statemachine)
+        {
+            oscilloscopeDelegate->setChannel(osciChannel);
+            m_bOscilloscopeCmd = true;
+        }
     }
 }
 
@@ -416,10 +419,7 @@ void cBridge::bridgeActiveParameterDone()
     qDebug() << "Bridge parameter done state entered";
 #endif
     if (m_bOscilloscopeCmd)
-    {
-        m_bOscilloscopeCmd = false;
         emit startOscilloscope();
-    }
     else
         emit startMeasurement();
 }
@@ -457,6 +457,7 @@ void cBridge::bridgeActiveOscilloscopeSync()
     else
     {
         m_pLWLConnection->sendCmdRecognized(false);
+        m_bOscilloscopeCmd = false;
         emit startMeasurement();
     }
 }
