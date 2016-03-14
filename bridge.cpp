@@ -464,7 +464,10 @@ void cBridge::bridgeActiveOscilloscopeSync()
     QByteArray &lwlinput = m_pLWLConnection->getLWLInput();
 
     if (lwlinput.at(OsciCmd) > 0)
+    {
+        QCoreApplication::processEvents();
         emit syncFG301();
+    }
     else
     {
         m_pLWLConnection->sendCmdRecognized(false);
