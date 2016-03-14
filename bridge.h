@@ -92,6 +92,7 @@ private:
     QState *m_pBridgeActiveParameterDoneState;
     QState *m_pBridgeActiveOscilloscopeStartState;
     QState *m_pBridgeActiveOscilloscopeDoneState;
+    QState *m_pBridgeActiveOscilloscopeSyncTestState;
     QState *m_pBridgeActiveOscilloscopeSyncState;
 
 private slots:
@@ -110,6 +111,7 @@ private slots:
     void bridgeActiveParameterDone();
     void bridgeActiveOscilloscopeStart();
     void bridgeActiveOscilloscopeDone();
+    void bridgeActiveOscilloscopeSyncTest();
     void bridgeActiveOscilloscopeSync();
 
     void bridgeLWLCommand();

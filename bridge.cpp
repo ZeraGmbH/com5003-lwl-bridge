@@ -83,6 +83,7 @@ cBridge::~cBridge()
         delete m_pBridgeActiveParameterDoneState;
         delete m_pBridgeActiveOscilloscopeStartState;
         delete m_pBridgeActiveOscilloscopeDoneState;
+        delete m_pBridgeActiveOscilloscopeSyncTestState;
         delete m_pBridgeActiveOscilloscopeSyncState;
         delete m_pBridgeActiveInitState;
         delete m_pBridgeActiveState;
@@ -209,6 +210,7 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveParameterDoneState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeStartState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeDoneState = new QState(m_pBridgeActiveState);
+    m_pBridgeActiveOscilloscopeSyncTestState = new QState(m_pBridgeActiveState);
     m_pBridgeActiveOscilloscopeSyncState = new QState(m_pBridgeActiveState);
 
     m_pBridgeActiveState->setInitialState(m_pBridgeActiveInitState);
@@ -230,8 +232,9 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveParameterDoneState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
     m_pBridgeActiveParameterDoneState->addTransition(this, SIGNAL(startOscilloscope()), m_pBridgeActiveOscilloscopeStartState);
     m_pBridgeActiveOscilloscopeStartState->addTransition(oscilloscopeDelegate, SIGNAL(finished()), m_pBridgeActiveOscilloscopeDoneState);
-    m_pBridgeActiveOscilloscopeDoneState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
-    m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
+    m_pBridgeActiveOscilloscopeDoneState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncTestState);
+    m_pBridgeActiveOscilloscopeSyncTestState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
+    m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncTestState);
     m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
 
     m_pBridgeStateMachine->addState(m_pBridgeIdleState);
@@ -253,6 +256,7 @@ void cBridge::bridgeConfigurationDone()
     connect(m_pBridgeActiveParameterDoneState, SIGNAL(entered()), SLOT(bridgeActiveParameterDone()));
     connect(m_pBridgeActiveOscilloscopeStartState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeStart()));
     connect(m_pBridgeActiveOscilloscopeDoneState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeDone()));
+    connect(m_pBridgeActiveOscilloscopeSyncTestState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeSyncTest()));
     connect(m_pBridgeActiveOscilloscopeSyncState, SIGNAL(entered()), SLOT(bridgeActiveOscilloscopeSync()));
 
     connect(m_pLWLConnection, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
@@ -445,11 +449,18 @@ void cBridge::bridgeActiveOscilloscopeDone()
 }
 
 
-void cBridge::bridgeActiveOscilloscopeSync()
+void cBridge::bridgeActiveOscilloscopeSyncTest()
 {
 #ifdef DEBUG
     qDebug() << "Bridge oscilloscope sync state entered";
 #endif
+
+    emit syncFG301();
+}
+
+
+void cBridge::bridgeActiveOscilloscopeSync()
+{
     QByteArray &lwlinput = m_pLWLConnection->getLWLInput();
 
     if (lwlinput.at(OsciCmd) > 0)
@@ -461,7 +472,6 @@ void cBridge::bridgeActiveOscilloscopeSync()
         emit startMeasurement();
     }
 }
-
 
 void cBridge::bridgeError(int errNum)
 {
