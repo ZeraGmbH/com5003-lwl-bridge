@@ -9,7 +9,7 @@ cETHOscilloscopeDelegate::cETHOscilloscopeDelegate(QTcpSocket *socket, cETHMeasu
     :cETHCmdDelegate(socket), m_pMeasureDelegate(measDelegate)
 {
     channelList << "ul1" << "ul2" << "ul3" << "il1" << "il2" << "il3";
-    m_nChannel = 1; // default
+    m_nChannel = 0; // default
 }
 
 
@@ -23,6 +23,8 @@ void cETHOscilloscopeDelegate::execute()
     int index;
 
     index = m_nChannel - 1;
+    if (index > channelList.count())
+        index = 0;
 
     switch (index)
     {
