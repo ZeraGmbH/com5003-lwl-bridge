@@ -44,6 +44,9 @@ cBridge::cBridge()
     connect(m_pBridgeConfigureDoneState, SIGNAL(entered()), SLOT(bridgeConfigurationDone()));
     connect(m_pBridgeConfiguration, SIGNAL(error(int)), this, SLOT(bridgeError(int)));
 
+    syncTimer.setSingleShot(true);
+    syncTimer.setInterval(10);
+
     m_pBridgeConfigStateMachine->start();
 }
 
@@ -231,7 +234,7 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeActiveParameterDoneState->addTransition(this, SIGNAL(startOscilloscope()), m_pBridgeActiveOscilloscopeStartState);
     m_pBridgeActiveOscilloscopeStartState->addTransition(oscilloscopeDelegate, SIGNAL(finished()), m_pBridgeActiveOscilloscopeDoneState);
     m_pBridgeActiveOscilloscopeDoneState->addTransition(this, SIGNAL(syncFG301()), m_pBridgeActiveOscilloscopeSyncState);
-    m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(syncFG301Loop()), m_pBridgeActiveOscilloscopeSyncState);
+    m_pBridgeActiveOscilloscopeSyncState->addTransition(&syncTimer, SIGNAL(timeout()), m_pBridgeActiveOscilloscopeSyncState);
     m_pBridgeActiveOscilloscopeSyncState->addTransition(this, SIGNAL(startMeasurement()), m_pBridgeActiveMeasureStartState);
 
     m_pBridgeStateMachine->addState(m_pBridgeIdleState);
@@ -455,7 +458,7 @@ void cBridge::bridgeActiveOscilloscopeSync()
 
     if (lwlinput.at(OsciCmd) > 0)
     {
-        emit syncFG301Loop();
+        syncTimer.start();
     }
     else
     {

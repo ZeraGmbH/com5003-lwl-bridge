@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QHash>
 #include <QStringList>
+#include <QTimer>
 
 
 class QStateMachine;
@@ -94,6 +95,8 @@ private:
     QState *m_pBridgeActiveOscilloscopeStartState;
     QState *m_pBridgeActiveOscilloscopeDoneState;
     QState *m_pBridgeActiveOscilloscopeSyncState;
+
+    QTimer syncTimer;
 
 private slots:
     void bridgeConfiguration();
