@@ -351,16 +351,29 @@ void cBridge::bridgeLWLCommand()
 void cBridge::setParameterCommands()
 {
     QByteArray lwlInput;
-
-    lwlInput = m_pLWLConnection->getLWLInput();
+    int selCode;
     QList<QString> cmdList;
 
-    cmdList.append(QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[lwlInput[UBCode]]));
-    cmdList.append(QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[lwlInput[IBCode]]));
+    lwlInput = m_pLWLConnection->getLWLInput();
+
+    // we make some tests here on parameter codes, in case they are corrupted we don't want to crash
+
+    selCode = lwlInput[UBCode];
+    if (!m_pBridgeConfigData->m_VoltageRangeHash.contains(selCode))
+        selCode = 0;
+    cmdList.append(QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
+
+    selCode = lwlInput[IBCode];
+    if (!m_pBridgeConfigData->m_CurrentRangeHash.contains(selCode))
+        selCode = 0;
+    cmdList.append(QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
 
     // we set all configuration listed measuring modes related to MMCode
     cModeSelect mSelect;
-    mSelect = m_pBridgeConfigData->m_MeasuringmodeHash[lwlInput[MMCode]];
+    selCode = lwlInput[MMCode];
+    if (!m_pBridgeConfigData->m_MeasuringmodeHash.contains(selCode))
+        selCode = 0;
+    mSelect = m_pBridgeConfigData->m_MeasuringmodeHash[selCode];
     for (int i = 0; i < mSelect.m_sModuleNameList.count(); i++)
         cmdList.append(QString("conf:%1:mmod %2;\n").arg(mSelect.m_sModuleNameList.at(i)).arg(mSelect.m_sMeasmodeNameList.at(i)));
 
