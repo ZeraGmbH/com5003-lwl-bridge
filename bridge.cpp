@@ -222,7 +222,7 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeIdleState->addTransition(m_pETHConnection, SIGNAL(connected()), m_pBridgeETHConnectedState);
     m_pBridgeETHConnectedState->addTransition(m_pETHConnection, SIGNAL(disconnected()), m_pBridgeIdleState);
     m_pBridgeETHConnectedState->addTransition(m_pLWLConnection, SIGNAL(connected()), m_pBridgeActiveState);
-    //m_pBridgeActiveState->addTransition(m_pLWLConnection, SIGNAL(disconnected()), m_pBridgeETHConnectedState);
+    m_pBridgeActiveState->addTransition(m_pLWLConnection, SIGNAL(disconnected()), m_pBridgeETHConnectedState);
     m_pBridgeActiveState->addTransition(m_pETHConnection, SIGNAL(disconnected()), m_pBridgeLWLConnectedState);
     m_pBridgeActiveInitState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveInitDoneState);
     m_pBridgeActiveInitDoneState->addTransition(parameterDelegate, SIGNAL(finished()), m_pBridgeActiveMeasureStartState);
