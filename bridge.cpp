@@ -271,7 +271,6 @@ void cBridge::bridgeInactive()
     m_bActive = false;
     m_bOscilloscopeCmd = false;
     m_bParameterCmd = false;
-    m_pBridgeStateMachine->stop();
 }
 
 
