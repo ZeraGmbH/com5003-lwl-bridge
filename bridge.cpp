@@ -380,7 +380,7 @@ void cBridge::setParameterCommands()
 
     parameterDelegate->setCmdList(cmdList);
 
-    int osciChannel = lwlInput[OsciCmd];
+    int osciChannel = lwlInput[OsciCmd] & 0x7f;
 
     if (!m_bOscilloscopeCmd) // retrigger impossible
     {
