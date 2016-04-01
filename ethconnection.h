@@ -28,6 +28,7 @@ signals:
 private:
     cBridgeConfigData *m_pConfigData;
     QTcpSocket *m_pSocket;
+    QTimer *m_pRetryTimer;
 
 private slots:
     void try2Connect();

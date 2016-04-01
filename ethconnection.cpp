@@ -4,6 +4,7 @@
 #include <QTimer>
 #include <QString>
 #include <QDebug>
+#include <QTimer>
 
 #include "bridge.h"
 #include "ethconnection.h"
@@ -12,10 +13,15 @@
 cETHConnection::cETHConnection(cBridgeConfigData *configdata)
     :m_pConfigData(configdata)
 {
+    m_pRetryTimer = new QTimer();
+    m_pRetryTimer->setSingleShot(true);
+    connect(m_pRetryTimer, SIGNAL(timeout()), this, SLOT(try2Connect()));
+
     m_pSocket = new QTcpSocket(this);
     connect(m_pSocket, SIGNAL(connected()), this, SLOT(regConnection()));
     connect(m_pSocket, SIGNAL(disconnected()), this, SLOT(regDisconnection()));
     connect(m_pSocket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(regError(QAbstractSocket::SocketError)));
+
     try2Connect();
 }
 
@@ -61,5 +67,5 @@ void cETHConnection::regError(QAbstractSocket::SocketError err)
     QAbstractSocket::SocketState sockState;
     sockState = m_pSocket->state();
     if ((sockState != QAbstractSocket::ConnectingState) && (sockState != QAbstractSocket::ConnectedState))
-        try2Connect();
+        m_pRetryTimer->start(10);
 }
