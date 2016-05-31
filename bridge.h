@@ -20,7 +20,8 @@ class cETHParameterDelegate;
 class cETHMeasureDelegate;
 class cETHOscilloscopeDelegate;
 
-#define DEBUG 1
+#define DEBUG 0
+#define DEBUG2 1
 
 enum bridgeExitConditions
 {
@@ -59,6 +60,8 @@ private:
     bool m_bActive;
     bool m_bOscilloscopeCmd;
     bool m_bParameterCmd;
+
+    int m_nRangeOutCount;
 
     cBridgeConfiguration *m_pBridgeConfiguration;
     cBridgeConfigData *m_pBridgeConfigData;

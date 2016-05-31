@@ -2,6 +2,7 @@
 #include <QHash>
 #include <QDebug>
 
+#include "bridge.h"
 #include "lwlconnection.h"
 #include "spiconnection.h"
 
@@ -38,7 +39,7 @@ QByteArray &cLWLConnection::getLWLInput()
 }
 
 
-void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash)
+void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash, int &debugCount)
 {
     // we set actual value to fg301 now
     QString s;
@@ -103,22 +104,33 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["F"]), 6, 'f', 2).toLatin1());
     pos+=6;
 
-    lwlOutput.replace(pos, 6, QString("%1").arg(*(actualValuesHash["UB"]), 6, 'f', 2).toLatin1());
+    QString s1,s2;
+
+    s1 = QString("%1").arg(*(actualValuesHash["UB"]), 6, 'f',2);
+    lwlOutput.replace(pos, 6, s1.toLatin1());
     pos+=6;
 
     if ( (*(actualValuesHash["IB"]) < 1.0))
     {
-        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3);
+        s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3);
         lwlOutput.replace(pos, 6, s.toLatin1());
-        qDebug() << QString("RngInfo%1.").arg(s);
     }
     else
     {
-        s = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 2);
+        s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 2);
         lwlOutput.replace(pos, 6, s.toLatin1());
-        qDebug() << QString("RngInfo%1.").arg(s);
     }
     pos+=6;
+
+
+#ifdef DEBUG2
+    if (debugCount > 0)
+    {
+        debugCount--;
+        qDebug() << QString("RngVoltageInfo%1.").arg(s1);
+        qDebug() << QString("RngCurrentInfo%1.").arg(s2);
+    }
+#endif
 
     // up to here we set actual values, voltage and current range information
 

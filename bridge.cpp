@@ -27,6 +27,8 @@ cBridge::cBridge()
     m_bOscilloscopeCmd = false;
     m_bParameterCmd =false;
 
+    m_nRangeOutCount = 0;
+
     m_pBridgeConfiguration = new cBridgeConfiguration();
 
     m_pBridgeConfigStateMachine = new QStateMachine();
@@ -353,6 +355,8 @@ void cBridge::setParameterCommands()
     int selCode;
     QList<QString> cmdList;
 
+    m_nRangeOutCount = 2; // we want 2 times debug output of range debug info after setting of range
+
     lwlInput = m_pLWLConnection->getLWLInput();
 
     // we make some tests here on parameter codes, in case they are corrupted we don't want to crash
@@ -362,13 +366,17 @@ void cBridge::setParameterCommands()
     if (!m_pBridgeConfigData->m_VoltageRangeHash.contains(selCode))
         selCode = 0;
     cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
+#ifdef DEBUG2
     qDebug() << QString("Cmd :%1").arg(s);
+#endif
 
     selCode = lwlInput[IBCode];
     if (!m_pBridgeConfigData->m_CurrentRangeHash.contains(selCode))
         selCode = 0;
     cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
+#ifdef DEBUG2
     qDebug() << QString("Cmd :%1").arg(s);
+#endif
 
     // we set all configuration listed measuring modes related to MMCode
     cModeSelect mSelect;
@@ -410,7 +418,7 @@ void cBridge::bridgeActiveMeasureDone()
 #ifdef DEBUG
     qDebug() << "Bridge measure done state entered";
 #endif
-    m_pLWLConnection->sendActualValues(measureDelegate->getActualValues());
+    m_pLWLConnection->sendActualValues(measureDelegate->getActualValues(), m_nRangeOutCount);
     if (m_bParameterCmd)
     {
         m_bParameterCmd = false;
