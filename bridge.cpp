@@ -357,15 +357,18 @@ void cBridge::setParameterCommands()
 
     // we make some tests here on parameter codes, in case they are corrupted we don't want to crash
 
+    QString s;
     selCode = lwlInput[UBCode];
     if (!m_pBridgeConfigData->m_VoltageRangeHash.contains(selCode))
         selCode = 0;
-    cmdList.append(QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
+    cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
+    qDebug() << QString("Cmd :%1").arg(s);
 
     selCode = lwlInput[IBCode];
     if (!m_pBridgeConfigData->m_CurrentRangeHash.contains(selCode))
         selCode = 0;
-    cmdList.append(QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
+    cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
+    qDebug() << QString("Cmd :%1").arg(s);
 
     // we set all configuration listed measuring modes related to MMCode
     cModeSelect mSelect;
