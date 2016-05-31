@@ -113,12 +113,12 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     if ( (*(actualValuesHash["IB"]) < 1.0))
     {
         s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3);
-        lwlOutput.replace(pos, 6, s.toLatin1());
+        lwlOutput.replace(pos, 6, s2.toLatin1());
     }
     else
     {
         s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 2);
-        lwlOutput.replace(pos, 6, s.toLatin1());
+        lwlOutput.replace(pos, 6, s2.toLatin1());
     }
     pos+=6;
 
