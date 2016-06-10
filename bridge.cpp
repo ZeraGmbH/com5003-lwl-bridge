@@ -28,6 +28,8 @@ cBridge::cBridge()
     m_bParameterCmd =false;
 
     m_nRangeOutCount = 0;
+    m_nRecovery = 0;
+    m_nRecoveryCount = 0;
 
     m_pBridgeConfiguration = new cBridgeConfiguration();
 
@@ -346,6 +348,10 @@ void cBridge::bridgeLWLCommand()
 #endif
     setParameterCommands();
     m_bParameterCmd = true;
+
+#ifdef RECOVERY
+    m_nRecovery = 3; // 1x ignore + 2x max. recovery
+#endif
 }
 
 
@@ -354,6 +360,7 @@ void cBridge::setParameterCommands()
     QByteArray lwlInput;
     int selCode;
     QList<QString> cmdList;
+    double scale;
 
     m_nRangeOutCount = 2; // we want 2 times debug output of range debug info after setting of range
 
@@ -365,6 +372,19 @@ void cBridge::setParameterCommands()
     selCode = lwlInput[UBCode];
     if (!m_pBridgeConfigData->m_VoltageRangeHash.contains(selCode))
         selCode = 0;
+
+    s = m_pBridgeConfigData->m_VoltageRangeHash[selCode];
+    s.replace("V","");
+    if (s.contains('m') > 0)
+    {
+        s.replace("m","");
+        scale = 0.001;
+    }
+    else
+        scale = 1.0;
+
+    m_fUBValue = s.toDouble() * scale;
+
     cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
 #ifdef DEBUG2
     qDebug() << QString("Cmd :%1").arg(s);
@@ -373,6 +393,19 @@ void cBridge::setParameterCommands()
     selCode = lwlInput[IBCode];
     if (!m_pBridgeConfigData->m_CurrentRangeHash.contains(selCode))
         selCode = 0;
+
+    s = m_pBridgeConfigData->m_CurrentRangeHash[selCode];
+    s.replace("A","");
+    if (s.contains('m') > 0)
+    {
+        s.replace("m","");
+        scale = 0.001;
+    }
+    else
+        scale = 1.0;
+
+    m_fIBValue = s.toDouble() * scale;
+
     cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
 #ifdef DEBUG2
     qDebug() << QString("Cmd :%1").arg(s);
@@ -418,7 +451,32 @@ void cBridge::bridgeActiveMeasureDone()
 #ifdef DEBUG
     qDebug() << "Bridge measure done state entered";
 #endif
-    m_pLWLConnection->sendActualValues(measureDelegate->getActualValues(), m_nRangeOutCount);
+    QHash<QString, double*> ActValueHash;
+
+    ActValueHash = measureDelegate->getActualValues();
+    m_pLWLConnection->sendActualValues(ActValueHash, m_nRangeOutCount);
+
+    switch (m_nRecovery)
+    {
+    case 3:
+        break;
+    case 2:
+    case 1:
+        if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
+        {
+             // we did not get the expected range
+             setParameterCommands();
+             m_bParameterCmd = true;
+             m_nRecovery--;
+             m_nRecoveryCount++;
+             qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
+        }
+        else
+             m_nRecovery = 0;
+    case 0:
+        break;
+    }
+
     if (m_bParameterCmd)
     {
         m_bParameterCmd = false;

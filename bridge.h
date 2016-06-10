@@ -22,6 +22,7 @@ class cETHOscilloscopeDelegate;
 
 //#define DEBUG 1
 #define DEBUG2 1
+#define RECOVERY 1
 
 enum bridgeExitConditions
 {
@@ -62,6 +63,12 @@ private:
     bool m_bParameterCmd;
 
     int m_nRangeOutCount;
+
+    // this 3 values for error recovery
+    int m_nRecovery;
+    int m_nRecoveryCount;
+    float m_fUBValue;
+    float m_fIBValue;
 
     cBridgeConfiguration *m_pBridgeConfiguration;
     cBridgeConfigData *m_pBridgeConfigData;

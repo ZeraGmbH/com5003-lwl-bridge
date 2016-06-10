@@ -175,10 +175,19 @@ void cETHMeasureDelegate::receiveAnswer()
 
             double rngValue;
             bool ok;
+            double scale;
 
             if (answer.count('V') > 0)
             {
                 answer.replace("V","");
+                if (answer.contains('m') > 0)
+                {
+                    answer.replace("m","");
+                    scale = 0.001;
+                }
+                else
+                    scale = 1.0;
+
                 rngValue = answer.toDouble(&ok);
                 *(m_ActualValuesHash["UB"]) = rngValue;
             }
@@ -186,9 +195,7 @@ void cETHMeasureDelegate::receiveAnswer()
             else
 
             {
-                double scale;
-
-                answer.replace("A","");
+                 answer.replace("A","");
                 if (answer.contains('m') > 0)
                 {
                     answer.replace("m","");
