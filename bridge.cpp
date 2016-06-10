@@ -459,6 +459,7 @@ void cBridge::bridgeActiveMeasureDone()
     switch (m_nRecovery)
     {
     case 3:
+        m_nRecovery--;
         break;
     case 2:
     case 1:
