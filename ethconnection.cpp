@@ -67,5 +67,5 @@ void cETHConnection::regError(QAbstractSocket::SocketError err)
     QAbstractSocket::SocketState sockState;
     sockState = m_pSocket->state();
     if ((sockState != QAbstractSocket::ConnectingState) && (sockState != QAbstractSocket::ConnectedState))
-        m_pRetryTimer->start(10);
+        m_pRetryTimer->start(1000);
 }
