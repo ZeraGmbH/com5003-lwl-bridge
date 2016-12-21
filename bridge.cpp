@@ -283,6 +283,7 @@ void cBridge::bridgeIdle()
 #ifdef DEBUG
     qDebug() << "Bridge idle state entered";
 #endif
+    m_pSPIConnection->setStatus(bridgeIdleStatus);
 }
 
 
@@ -291,6 +292,7 @@ void cBridge::bridgeLWLConnected()
 #ifdef DEBUG
     qDebug() << "Bridge LWL connected state entered";
 #endif
+    m_pSPIConnection->setStatus(bridgeLWLConnectedStatus);
 }
 
 
@@ -299,6 +301,7 @@ void cBridge::bridgeETHConnected()
 #ifdef DEBUG
     qDebug() << "Bridge ETH connected state entered";
 #endif
+    m_pSPIConnection->setStatus(bridgeETHConnectedStatus);
 }
 
 
@@ -307,6 +310,8 @@ void cBridge::bridgeActiveInit()
 #ifdef DEBUG
     qDebug() << "Bridge active init state entered";
 #endif
+
+    m_pSPIConnection->setStatus(bridgeActiveStatus);
 
     // we have to set some default values , info about these comes from xml config file
 

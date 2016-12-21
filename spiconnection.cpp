@@ -67,6 +67,22 @@ bool cSPIConnection::readSPI(QByteArray &Input, quint32 InputAdress, qint32 len)
 }
 
 
+bool cSPIConnection::setStatus(devStatus stat)
+{
+    ctrlBA.clear();
+    ctrlBA.append(0x4); // adr = 0x4 -> set adress for status led
+    ctrlBA.append(char(0));
+    ctrlBA.append(char(0));
+    ctrlBA.append(char(0));
+    ctrlBA.append(stat);
+
+    int written;
+
+    written = m_pSPICtrlDevice->write(ctrlBA);
+    return (written == ctrlBA.size());
+}
+
+
 bool cSPIConnection::setDataAdress(quint32 adress, bool write)
 {
     ctrlBA.clear();
