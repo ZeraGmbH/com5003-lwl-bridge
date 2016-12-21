@@ -11,6 +11,8 @@ cLWLConnection::cLWLConnection(cSPIConnection *spiconnection)
 {
     m_bconnected = false;
 
+    corruptLWLInput();
+
     m_pLWLLoadTimer = new QTimer(this);
     connect(m_pLWLLoadTimer, SIGNAL(timeout()), this, SLOT(readLWLInput()));
     m_pLWLLoadTimer->start(50); // our base time for lwl test is 50 ms
@@ -206,6 +208,19 @@ void cLWLConnection::writeLWLOutput(int len)
     {
         m_pSPIConnection->writeSPI(lwlOutput, lwlOutputAdress, len); // if connected we write output
     }
+}
+
+
+void cLWLConnection::corruptLWLInput()
+{
+
+    lwlInput.clear();
+
+    for (int i = 0; i < lwlInputDataLength;i++)
+        lwlInput.append(char(i));
+
+    m_pSPIConnection->writeSPI(lwlInput, lwlInputAdress, lwlInputDataLength);
+
 }
 
 

@@ -44,6 +44,7 @@ private:
 
     void setDisconnectCount();
     void writeLWLOutput(int len);
+    void corruptLWLInput();
 
 
 private slots:
