@@ -7,6 +7,8 @@
 #include <QState>
 #include <QFinalState>
 #include <QSPIDevice>
+#include <math.h>
+
 
 #include "bridge.h"
 #include "lwlconnection.h"
