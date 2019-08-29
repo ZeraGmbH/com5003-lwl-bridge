@@ -321,6 +321,7 @@ void cBridge::bridgeActiveInit()
 
     QList<QString> cmdList;
 
+    cmdList.append(QString("conf:rng1:pll %1;\n").arg(m_pBridgeConfigData->m_bPLLAuto));
     cmdList.append(QString("conf:rng1:rng %1;\n").arg(m_pBridgeConfigData->m_bRangeAuto));
     cmdList.append(QString("conf:rng1:gro %1;\n").arg(m_pBridgeConfigData->m_bGrouping));
     cmdList.append(QString("conf:rms1:tint %1;\n").arg(m_pBridgeConfigData->m_nIntegrationtime));
