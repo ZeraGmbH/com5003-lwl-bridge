@@ -6,6 +6,7 @@
         <port>6320</port>
         <spictrl>/dev/spidev2.0</spictrl>
         <spidata>/dev/spidev1.0</spidata>
+        <pllauto>1</pllauto>
         <rangeauto>0</rangeauto>
         <grouping>1</grouping>
         <integrationtime>1</integrationtime>
