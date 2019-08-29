@@ -26,6 +26,7 @@ struct cBridgeConfigData
     quint16 m_nPortReferenceMeter;
     QString m_sSPICtrlDeviceName;
     QString m_sSPIDataDeviceName;
+    int m_bPLLAuto;
     int m_bRangeAuto;
     int m_bGrouping;
     int m_nIntegrationtime;
