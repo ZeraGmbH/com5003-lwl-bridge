@@ -39,6 +39,7 @@ void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
     m_ConfigXMLMap["bridgeconf:referencemeter:port"] = setReferenceMeterPort;
     m_ConfigXMLMap["bridgeconf:referencemeter:spictrl"] = setSPICtrlDeviceName;
     m_ConfigXMLMap["bridgeconf:referencemeter:spidata"] = setSPIDataDeviceName;
+    m_ConfigXMLMap["bridgeconf:referencemeter:pllauto"] = setPllAuto;
     m_ConfigXMLMap["bridgeconf:referencemeter:rangeauto"] = setRangeAuto;
     m_ConfigXMLMap["bridgeconf:referencemeter:grouping"] = setGrouping;
     m_ConfigXMLMap["bridgeconf:referencemeter:integrationtime"] = setIntegrationtime;
@@ -89,6 +90,9 @@ void cBridgeConfiguration::configXMLInfo(QString key)
             break;
         case setSPIDataDeviceName:
             m_pBridgeConfigData->m_sSPIDataDeviceName = m_pXMLReader->getValue(key);
+            break;
+        case setPllAuto:
+            m_pBridgeConfigData->m_bPLLAuto = m_pXMLReader->getValue(key).toInt(&ok);
             break;
         case setRangeAuto:
             m_pBridgeConfigData->m_bRangeAuto = m_pXMLReader->getValue(key).toInt(&ok);

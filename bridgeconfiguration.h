@@ -19,6 +19,7 @@ enum moduleconfigstate
     setReferenceMeterPort,
     setSPICtrlDeviceName,
     setSPIDataDeviceName,
+    setPllAuto,
     setRangeAuto,
     setGrouping,
     setIntegrationtime,
