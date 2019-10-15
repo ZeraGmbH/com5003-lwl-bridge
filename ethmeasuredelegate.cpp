@@ -48,6 +48,7 @@ cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
 
     m_ActualValuesHash["UB"] = new double;
     m_ActualValuesHash["IB"] = new double;
+    m_ActualValuesHash["OVL"] = new double;
 
     m_ActualValuesDecodeHash["RMS1:UL1:[V]:"] = m_ActualValuesHash["UL1"];
     m_ActualValuesDecodeHash["RMS1:UL2:[V]:"] = m_ActualValuesHash["UL2"];
@@ -171,11 +172,12 @@ void cETHMeasureDelegate::receiveAnswer()
 
         if (answer.count(';') == 0)
         {
-            // so we have an answer to voltage or current range query
+            // so we have an answer to voltage or current range query or overload query
 
             double rngValue;
             bool ok;
             double scale;
+            double ovlValue;
 
             if (answer.count('V') > 0)
             {
@@ -194,19 +196,28 @@ void cETHMeasureDelegate::receiveAnswer()
 
             else
 
-            {
-                 answer.replace("A","");
-                if (answer.contains('m') > 0)
+                if (answer.count('A') > 0)
                 {
-                    answer.replace("m","");
-                    scale = 0.001;
-                }
-                else
-                    scale = 1.0;
 
-                rngValue = answer.toDouble(&ok) * scale;
-                *(m_ActualValuesHash["IB"]) = rngValue;
-            }
+                    answer.replace("A","");
+                    if (answer.contains('m') > 0)
+                    {
+                        answer.replace("m","");
+                        scale = 0.001;
+                    }
+                    else
+                        scale = 1.0;
+
+                    rngValue = answer.toDouble(&ok) * scale;
+                    *(m_ActualValuesHash["IB"]) = rngValue;
+                }
+
+            else
+
+                {
+                    ovlValue = answer.toDouble(&ok);
+                    *(m_ActualValuesHash["OVL"]) = ovlValue;
+                }
         }
 
         else
