@@ -22,7 +22,6 @@ class cETHOscilloscopeDelegate;
 
 #define DEBUG 1
 #define DEBUG2 1
-#define RECOVERY 1
 
 enum bridgeExitConditions
 {
@@ -65,7 +64,6 @@ private:
     int m_nRangeOutCount;
 
     // this 3 values for error recovery
-    int m_nRecovery;
     int m_nRecoveryCount;
     float m_fUBValue;
     float m_fIBValue;
@@ -107,6 +105,7 @@ private:
     QState *m_pBridgeActiveOscilloscopeSyncState;
 
     QTimer syncTimer;
+    QTimer rangeRecoveryTimer;
 
 private slots:
     void bridgeConfiguration();
@@ -129,10 +128,10 @@ private slots:
     void bridgeLWLCommand();
     void setParameterCommands();
 
-
-
-
     void bridgeError(int errNum);
+
+    void rangeRecoveryExpired();
+
 
 };
 

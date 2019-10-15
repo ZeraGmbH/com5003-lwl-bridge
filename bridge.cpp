@@ -30,7 +30,6 @@ cBridge::cBridge()
     m_bParameterCmd =false;
 
     m_nRangeOutCount = 0;
-    m_nRecovery = 0;
     m_nRecoveryCount = 0;
 
     m_pBridgeConfiguration = new cBridgeConfiguration();
@@ -52,6 +51,10 @@ cBridge::cBridge()
 
     syncTimer.setSingleShot(true);
     syncTimer.setInterval(10);
+
+    rangeRecoveryTimer.setSingleShot(true);
+    rangeRecoveryTimer.setInterval(5); // we will retry for 5 seconds after fg301 command to set correct ranges
+    connect(&rangeRecoveryTimer, SIGNAL(timeout()), SLOT(rangeRecoveryExpired()));
 
     m_pBridgeConfigStateMachine->start();
 }
@@ -349,17 +352,14 @@ void cBridge::bridgeActiveInitDone()
 
 void cBridge::bridgeLWLCommand()
 {
-    // we have to read data from lwlconnection
+    // data has been read from lwlconnection and we have to
     // derive some commands from data and send them to the reference meter
 #ifdef DEBUG
     qDebug() << "Bridge fg301 lwl command received";
 #endif
     setParameterCommands();
     m_bParameterCmd = true;
-
-#ifdef RECOVERY
-    m_nRecovery = 3; // 1x ignore + 2x max. recovery
-#endif
+    rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
 }
 
 
@@ -464,27 +464,16 @@ void cBridge::bridgeActiveMeasureDone()
     ActValueHash = measureDelegate->getActualValues();
     m_pLWLConnection->sendActualValues(ActValueHash, m_nRangeOutCount);
 
-    switch (m_nRecovery)
-    {
-    case 3:
-        m_nRecovery--;
-        break;
-    case 2:
-    case 1:
-        if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
-        {
-             // we did not get the expected range
-             setParameterCommands();
-             m_bParameterCmd = true;
-             m_nRecovery--;
-             m_nRecoveryCount++;
-             qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
-        }
-        else
-             m_nRecovery = 0;
-    case 0:
-        break;
-    }
+    if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
+    // a voltage or current range is not what we wanted
+        if (rangeRecoveryTimer.isActive())
+            if (*ActValueHash["OVL"] > 0.0) // reference meter has overload
+            {
+                setParameterCommands();
+                m_bParameterCmd = true;
+                m_nRecoveryCount++;
+                qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
+            }
 
     if (m_bParameterCmd)
     {
@@ -561,4 +550,10 @@ void cBridge::bridgeActiveOscilloscopeSync()
 void cBridge::bridgeError(int errNum)
 {
     QCoreApplication::instance()->exit(errNum); // we leave application on error condition
+}
+
+
+void cBridge::rangeRecoveryExpired()
+{
+    rangeRecoveryTimer.stop();
 }
