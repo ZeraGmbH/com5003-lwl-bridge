@@ -6,13 +6,13 @@
 
 CONFIG += c++11
 
+include(bridge.user.pri)
+
 #QT       += core
 QT       += core spidevice
 
 QT       -= gui
 QT       += network
-
-include(bridge.user.pri)
 
 QMAKE_CXXFLAGS += -O0
 
