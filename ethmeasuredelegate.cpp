@@ -17,6 +17,7 @@ cETHMeasureDelegate::cETHMeasureDelegate(QTcpSocket *socket)
     m_sCmdList.append(QString("meas:rng1:f?\n"));
     m_sCmdList.append(QString("sens:rng1:ul1:rang?\n")); // we handle the range queries at the same time as measurement
     m_sCmdList.append(QString("sens:rng1:il1:rang?\n"));
+    m_sCmdList.append(QString("sens:rng1:over?\n"));
 
     // a hash holds our actual values or intermediate values;
 
