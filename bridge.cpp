@@ -53,7 +53,7 @@ cBridge::cBridge()
     syncTimer.setInterval(10);
 
     rangeRecoveryTimer.setSingleShot(true);
-    rangeRecoveryTimer.setInterval(5); // we will retry for 5 seconds after fg301 command to set correct ranges
+    rangeRecoveryTimer.setInterval(5000); // we will retry for 5 seconds after fg301 command to set correct ranges
     connect(&rangeRecoveryTimer, SIGNAL(timeout()), SLOT(rangeRecoveryExpired()));
 
     m_pBridgeConfigStateMachine->start();
