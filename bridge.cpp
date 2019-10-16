@@ -285,7 +285,7 @@ void cBridge::bridgeInactive()
 
 void cBridge::bridgeIdle()
 {
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << "Bridge idle state entered";
 #endif
     m_pSPIConnection->setStatus(bridgeIdleStatus);
@@ -294,7 +294,7 @@ void cBridge::bridgeIdle()
 
 void cBridge::bridgeLWLConnected()
 {
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << "Bridge LWL connected state entered";
 #endif
     m_pSPIConnection->setStatus(bridgeLWLConnectedStatus);
@@ -303,7 +303,7 @@ void cBridge::bridgeLWLConnected()
 
 void cBridge::bridgeETHConnected()
 {
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << "Bridge ETH connected state entered";
 #endif
     m_pSPIConnection->setStatus(bridgeETHConnectedStatus);
@@ -312,7 +312,7 @@ void cBridge::bridgeETHConnected()
 
 void cBridge::bridgeActiveInit()
 {    
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << "Bridge active init state entered";
 #endif
 
@@ -341,7 +341,7 @@ void cBridge::bridgeActiveInit()
 
 void cBridge::bridgeActiveInitDone()
 {
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << "Bridge active done state entered";
 #endif
     // we got lwlconnected and eth connected so
@@ -354,7 +354,7 @@ void cBridge::bridgeLWLCommand()
 {
     // data has been read from lwlconnection and we have to
     // derive some commands from data and send them to the reference meter
-#ifdef DEBUG
+#ifdef DEBUGCmd
     qDebug() << "Bridge fg301 lwl command received";
 #endif
     setParameterCommands();
@@ -394,7 +394,7 @@ void cBridge::setParameterCommands()
     m_fUBValue = s.toDouble() * scale;
 
     cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
-#ifdef DEBUG2
+#ifdef DEBUGRange
     qDebug() << QString("Cmd :%1").arg(s);
 #endif
 
@@ -415,7 +415,7 @@ void cBridge::setParameterCommands()
     m_fIBValue = s.toDouble() * scale;
 
     cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
-#ifdef DEBUG2
+#ifdef DEBUGRange
     qDebug() << QString("Cmd :%1").arg(s);
 #endif
 
@@ -447,7 +447,7 @@ void cBridge::setParameterCommands()
 
 void cBridge::bridgeActiveMeasureStart()
 {
-#ifdef DEBUG
+#ifdef DEBUGMeas
     qDebug() << "Bridge measure start state entered";
 #endif
     measureDelegate->execute();
@@ -456,7 +456,7 @@ void cBridge::bridgeActiveMeasureStart()
 
 void cBridge::bridgeActiveMeasureDone()
 {
-#ifdef DEBUG
+#ifdef DEBUGMeas
     qDebug() << "Bridge measure done state entered";
 #endif
     QHash<QString, double*> ActValueHash;
@@ -473,20 +473,20 @@ void cBridge::bridgeActiveMeasureDone()
                 setParameterCommands();
                 m_bParameterCmd = true;
                 m_nRecoveryCount++;
-#ifdef DEBUG2
+#ifdef DEBUGRange
                 qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
 #endif
             }
             else
             {
-#ifdef DEBUG2
+#ifdef DEBUGRange
                 qDebug() << QString("Wrong range no overload condition");
 #endif
             }
         }
         else
         {
-#ifdef DEBUG2
+#ifdef DEBUGRange
             qDebug() << QString("Wrong range recoverytimer expired");
 #endif
         }
@@ -504,7 +504,7 @@ void cBridge::bridgeActiveMeasureDone()
 
 void cBridge::bridgeActiveParameterStart()
 {
-#ifdef DEBUG
+#ifdef DEBUGPar
     qDebug() << "Bridge parameter start state entered";
 #endif
     parameterDelegate->execute();
@@ -513,7 +513,7 @@ void cBridge::bridgeActiveParameterStart()
 
 void cBridge::bridgeActiveParameterDone()
 {
-#ifdef DEBUG
+#ifdef DEBUGPar
     qDebug() << "Bridge parameter done state entered";
 #endif
     if (m_bOscilloscopeCmd)
@@ -525,7 +525,7 @@ void cBridge::bridgeActiveParameterDone()
 
 void cBridge::bridgeActiveOscilloscopeStart()
 {
-#ifdef DEBUG
+#ifdef DEBUGMeas
     qDebug() << "Bridge oscilloscope start state entered";
 #endif
     m_pLWLConnection->sendCmdRecognized(true); // we tell fg301 that we have recognized its command
@@ -535,7 +535,7 @@ void cBridge::bridgeActiveOscilloscopeStart()
 
 void cBridge::bridgeActiveOscilloscopeDone()
 {
-#ifdef DEBUG
+#ifdef DEBUGMeas
     qDebug() << "Bridge oscilloscope done state entered";
 #endif
     m_pLWLConnection->sendOscillogram(oscilloscopeDelegate->getOscillogram());
@@ -545,7 +545,7 @@ void cBridge::bridgeActiveOscilloscopeDone()
 
 void cBridge::bridgeActiveOscilloscopeSync()
 {
-#ifdef DEBUG
+#ifdef DEBUGMeas
     qDebug() << "Bridge oscilloscope sync state entered";
 #endif
 

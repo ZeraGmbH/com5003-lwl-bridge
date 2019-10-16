@@ -20,8 +20,10 @@ class cETHParameterDelegate;
 class cETHMeasureDelegate;
 class cETHOscilloscopeDelegate;
 
-#define DEBUG 1
-#define DEBUG2 1
+#define DEBUGInit 1
+#define DEBUGPar 1
+//#define DEBUGMeas 1
+#define DEBUGRange 1
 
 enum bridgeExitConditions
 {
