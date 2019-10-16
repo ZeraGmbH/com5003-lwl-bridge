@@ -467,13 +467,29 @@ void cBridge::bridgeActiveMeasureDone()
     if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
     // a voltage or current range is not what we wanted
         if (rangeRecoveryTimer.isActive())
+        {
             if (*ActValueHash["OVL"] > 0.0) // reference meter has overload
             {
                 setParameterCommands();
                 m_bParameterCmd = true;
                 m_nRecoveryCount++;
+#ifdef DEBUG2
                 qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
+#endif
             }
+            else
+            {
+#ifdef DEBUG2
+                qDebug() << QString("Wrong range no overload condition");
+#endif
+            }
+        }
+        else
+        {
+#ifdef DEBUG2
+            qDebug() << QString("Wrong range recoverytimer expired");
+#endif
+        }
 
     if (m_bParameterCmd)
     {
