@@ -5,6 +5,7 @@
 #include <QHash>
 #include <QStringList>
 #include <QTimer>
+#include <QTime>
 
 
 class QStateMachine;
@@ -106,6 +107,7 @@ private:
 
     QTimer syncTimer;
     QTimer rangeRecoveryTimer;
+    QTime rangeTimer;
 
 private slots:
     void bridgeConfiguration();

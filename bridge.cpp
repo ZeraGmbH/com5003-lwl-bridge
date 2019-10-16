@@ -358,6 +358,7 @@ void cBridge::bridgeLWLCommand()
 #endif
     setParameterCommands();
     m_bParameterCmd = true;
+    m_nRecoveryCount = 0; // after each command we reset the recovery count
     rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
 }
 
@@ -459,7 +460,22 @@ void cBridge::bridgeActiveMeasureDone()
     QHash<QString, double*> ActValueHash;
 
     ActValueHash = measureDelegate->getActualValues();
-    m_pLWLConnection->sendActualValues(ActValueHash, rangeRecoveryTimer.isActive());
+    m_pLWLConnection->sendActualValues(ActValueHash);
+
+#ifdef DEBUGRange
+    // while recovery timer is running we want to see the range info and the according time elapsed since range command
+    if (rangeRecoveryTimer.isActive())
+    {
+        int t;
+        t = rangeTimer.elapsed();
+
+        qDebug() << QString("VoltageRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["UB"]), 6, 'f', 2).arg(t);
+        if ( (*(ActValueHash["IB"]) < 1.0))
+            qDebug() << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 3).arg(t);
+        else
+            qDebug() << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 2).arg(t);
+    }
+#endif
 
     if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
     // a voltage or current range is not what we wanted
@@ -491,6 +507,7 @@ void cBridge::bridgeActiveMeasureDone()
     if (m_bParameterCmd)
     {
         m_bParameterCmd = false;
+        rangeTimer.start();
         emit startParameter();
     }
 
