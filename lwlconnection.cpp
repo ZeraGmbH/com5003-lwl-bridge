@@ -125,10 +125,10 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
     pos+=6;
 
 
-#ifdef DEBUG2
-    if (debugCount > 0)
+#ifdef DEBUGRange
+    if (true)
     {
-        debugCount--;
+        //debugCount--;
         qDebug() << QString("RngVoltageInfo%1.").arg(s1);
         qDebug() << QString("RngCurrentInfo%1.").arg(s2);
     }
