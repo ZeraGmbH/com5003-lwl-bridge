@@ -63,8 +63,6 @@ private:
     bool m_bOscilloscopeCmd;
     bool m_bParameterCmd;
 
-    int m_nRangeOutCount;
-
     // this 3 values for error recovery
     int m_nRecoveryCount;
     float m_fUBValue;

@@ -29,7 +29,6 @@ cBridge::cBridge()
     m_bOscilloscopeCmd = false;
     m_bParameterCmd =false;
 
-    m_nRangeOutCount = 0;
     m_nRecoveryCount = 0;
 
     m_pBridgeConfiguration = new cBridgeConfiguration();
@@ -370,8 +369,6 @@ void cBridge::setParameterCommands()
     QList<QString> cmdList;
     double scale;
 
-    m_nRangeOutCount = 2; // we want 2 times debug output of range debug info after setting of range
-
     lwlInput = m_pLWLConnection->getLWLInput();
 
     // we make some tests here on parameter codes, in case they are corrupted we don't want to crash
@@ -462,7 +459,7 @@ void cBridge::bridgeActiveMeasureDone()
     QHash<QString, double*> ActValueHash;
 
     ActValueHash = measureDelegate->getActualValues();
-    m_pLWLConnection->sendActualValues(ActValueHash, m_nRangeOutCount);
+    m_pLWLConnection->sendActualValues(ActValueHash, rangeRecoveryTimer.isActive());
 
     if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
     // a voltage or current range is not what we wanted
