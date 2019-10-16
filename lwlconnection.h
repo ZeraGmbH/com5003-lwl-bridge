@@ -23,7 +23,7 @@ public:
     bool isConnected();
     QByteArray& getLWLInput();    
 
-    void sendActualValues(QHash<QString, double*> &actualValuesHash, int& debugCount);
+    void sendActualValues(QHash<QString, double*> &actualValuesHash, bool isRanging);
     void sendOscillogram(QVector<qint16> &oscillogram);
     void sendCmdRecognized(bool on);
 

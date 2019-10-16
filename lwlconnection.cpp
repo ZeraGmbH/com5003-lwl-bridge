@@ -41,7 +41,7 @@ QByteArray &cLWLConnection::getLWLInput()
 }
 
 
-void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash, int &debugCount)
+void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash, bool isRanging)
 {
     // we set actual value to fg301 now
     QString s;
@@ -126,9 +126,8 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
 
 
 #ifdef DEBUGRange
-    if (true)
+    if (isRanging)
     {
-        //debugCount--;
         qDebug() << QString("RngVoltageInfo%1.").arg(s1);
         qDebug() << QString("RngCurrentInfo%1.").arg(s2);
     }
