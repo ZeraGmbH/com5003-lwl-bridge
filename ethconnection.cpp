@@ -40,7 +40,7 @@ QTcpSocket *cETHConnection::getSocket()
 
 void cETHConnection::try2Connect()
 {
-#ifdef DEBUG
+#ifdef DEBUGInit
     qDebug() << QString("Bridge start connection to %1:%2").arg(m_pConfigData->m_sIPReferenceMeter).arg(m_pConfigData->m_nPortReferenceMeter);
 #endif
     m_pSocket->connectToHost(QHostAddress(m_pConfigData->m_sIPReferenceMeter), m_pConfigData->m_nPortReferenceMeter);
