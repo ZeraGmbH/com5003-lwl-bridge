@@ -66,6 +66,7 @@ private:
 
     // this 3 values for error recovery
     int m_nRecoveryCount;
+    int m_nRecoveryCountTotal;
     float m_fUBValue;
     float m_fIBValue;
 

@@ -30,6 +30,7 @@ cBridge::cBridge()
     m_bParameterCmd =false;
 
     m_nRecoveryCount = 0;
+    m_nRecoveryCountTotal = 0;
 
     m_pBridgeConfiguration = new cBridgeConfiguration();
 
@@ -356,9 +357,15 @@ void cBridge::bridgeLWLCommand()
 #ifdef DEBUGCmd
     qDebug() << "Bridge fg301 lwl command received";
 #endif
+
     setParameterCommands();
     m_bParameterCmd = true;
     m_nRecoveryCount = 0; // after each command we reset the recovery count
+
+#ifdef DEBUGRange
+                qDebug() << QString("RecoveryCountTotal:%1").arg(m_nRecoveryCountTotal);
+#endif
+
     rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
 }
 
@@ -486,6 +493,7 @@ void cBridge::bridgeActiveMeasureDone()
                 setParameterCommands();
                 m_bParameterCmd = true;
                 m_nRecoveryCount++;
+                m_nRecoveryCountTotal++;
 #ifdef DEBUGRange
                 qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
 #endif
