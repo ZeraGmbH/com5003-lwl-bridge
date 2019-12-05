@@ -63,6 +63,7 @@ private:
     bool m_bActive;
     bool m_bOscilloscopeCmd;
     bool m_bParameterCmd;
+    bool m_bfirstParameterSend; // we will use this flag to ensure that recovery timer is started only once after new lwl config
 
     // this 3 values for error recovery
     int m_nRecoveryCount;

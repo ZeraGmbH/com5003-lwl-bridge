@@ -27,7 +27,8 @@ cBridge::cBridge()
 {
     m_bActive = false;
     m_bOscilloscopeCmd = false;
-    m_bParameterCmd =false;
+    m_bParameterCmd = false;
+    m_bfirstParameterSend = false;
 
     m_nRecoveryCount = 0;
     m_nRecoveryCountTotal = 0;
@@ -359,6 +360,7 @@ void cBridge::bridgeLWLCommand()
 #endif
 
     setParameterCommands();
+    m_bfirstParameterSend = true;
     m_bParameterCmd = true;
     m_nRecoveryCount = 0; // after each command we reset the recovery count
 
@@ -537,7 +539,11 @@ void cBridge::bridgeActiveParameterDone()
 #ifdef DEBUGPar
     qDebug() << "Bridge parameter done state entered";
 #endif
-    rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
+    if (m_bfirstParameterSend)
+    {
+        m_bfirstParameterSend = false; // it was the first send of parameter after new lwl config.
+        rangeRecoveryTimer.start(); // after we sent parameters we start our recovery timer
+    }
 
     if (m_bOscilloscopeCmd)
         emit startOscilloscope();
