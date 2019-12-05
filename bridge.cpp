@@ -366,7 +366,6 @@ void cBridge::bridgeLWLCommand()
                 qDebug() << QString("RecoveryCountTotal:%1").arg(m_nRecoveryCountTotal);
 #endif
 
-    rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
 }
 
 
@@ -517,9 +516,6 @@ void cBridge::bridgeActiveMeasureDone()
         m_bParameterCmd = false;
         rangeTime.start();
         emit startParameter();
-#ifdef DEBUGRange
-            qDebug() << QString("Commands will be sent now");
-#endif
     }
 
     else
@@ -541,6 +537,8 @@ void cBridge::bridgeActiveParameterDone()
 #ifdef DEBUGPar
     qDebug() << "Bridge parameter done state entered";
 #endif
+    rangeRecoveryTimer.start(); // after we sent commands we start our recovery timer
+
     if (m_bOscilloscopeCmd)
         emit startOscilloscope();
     else
