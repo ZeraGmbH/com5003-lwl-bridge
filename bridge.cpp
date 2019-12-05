@@ -474,7 +474,7 @@ void cBridge::bridgeActiveMeasureDone()
     if (rangeRecoveryTimer.isActive())
     {
         int t;
-        t = rangeTimer.elapsed();
+        t = rangeTime.elapsed();
 
         qDebug() << QString("VoltageRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["UB"]), 6, 'f', 2).arg(t);
         if ( (*(ActValueHash["IB"]) < 1.0))
@@ -515,8 +515,11 @@ void cBridge::bridgeActiveMeasureDone()
     if (m_bParameterCmd)
     {
         m_bParameterCmd = false;
-        rangeTimer.start();
+        rangeTime.start();
         emit startParameter();
+#ifdef DEBUGRange
+            qDebug() << QString("Commands will be sent now");
+#endif
     }
 
     else

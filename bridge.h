@@ -108,7 +108,7 @@ private:
 
     QTimer syncTimer;
     QTimer rangeRecoveryTimer;
-    QTime rangeTimer;
+    QTime rangeTime;
 
 private slots:
     void bridgeConfiguration();
