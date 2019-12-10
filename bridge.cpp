@@ -397,7 +397,7 @@ void cBridge::setParameterCommands()
     else
         scale = 1.0;
 
-    m_fUBValue = s.toDouble() * scale;
+    m_fUBValueWanted = s.toDouble() * scale;
 
     cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
 #ifdef DEBUGRange
@@ -418,7 +418,7 @@ void cBridge::setParameterCommands()
     else
         scale = 1.0;
 
-    m_fIBValue = s.toDouble() * scale;
+    m_fIBValueWanted = s.toDouble() * scale;
 
     cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
 #ifdef DEBUGRange
@@ -485,7 +485,7 @@ void cBridge::bridgeActiveMeasureDone()
     }
 #endif
 
-    if ( !(fabs((*ActValueHash["UB"]) - m_fUBValue) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValue) < 1e-7) )
+    if ( !(fabs((*ActValueHash["UB"]) - m_fUBValueSet) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValueSet) < 1e-7) )
     // a voltage or current range is not what we wanted
         if (rangeRecoveryTimer.isActive())
         {
@@ -539,6 +539,9 @@ void cBridge::bridgeActiveParameterDone()
 #ifdef DEBUGPar
     qDebug() << "Bridge parameter done state entered";
 #endif
+    m_fUBValueSet = m_fUBValueWanted;
+    m_fIBValueSet = m_fIBValueWanted;
+
     if (m_bfirstParameterSend)
     {
         m_bfirstParameterSend = false; // it was the first send of parameter after new lwl config.
