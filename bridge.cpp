@@ -347,6 +347,9 @@ void cBridge::bridgeActiveInitDone()
 #endif
     // we got lwlconnected and eth connected so
     setParameterCommands(); // once we call from here, later we get a signal each time lwl data has changed
+    m_fUBValueSet = m_fUBValueWanted;
+    m_fIBValueSet = m_fIBValueWanted;
+
     parameterDelegate->execute();
 }
 
