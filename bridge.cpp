@@ -512,7 +512,7 @@ void cBridge::bridgeActiveMeasureDone()
         else
         {
 #ifdef DEBUGRange
-            qDebug() << QString("Wrong range recoverytimer expired");
+            qDebug() << QString("Wrong range recoverytimer expired") << QString("RangeRead: %1").arg(*ActValueHash["IB"]) << QString("RangeWanted: %1").arg(m_fIBValueSet);
 #endif
         }
 
