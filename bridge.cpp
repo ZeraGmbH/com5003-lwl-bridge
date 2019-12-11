@@ -368,7 +368,7 @@ void cBridge::bridgeLWLCommand()
     m_nRecoveryCount = 0; // after each command we reset the recovery count
 
 #ifdef DEBUGRange
-                qDebug() << QString("RecoveryCountTotal:%1").arg(m_nRecoveryCountTotal);
+                qDebug() << QTime::currentTime() << ": " << QString("RecoveryCountTotal:%1").arg(m_nRecoveryCountTotal);
 #endif
 
 }
@@ -404,7 +404,7 @@ void cBridge::setParameterCommands()
 
     cmdList.append(s = QString("sens:rng1:ul1:rang %1;\n").arg(m_pBridgeConfigData->m_VoltageRangeHash[selCode]));
 #ifdef DEBUGRange
-    qDebug() << QString("Cmd :%1").arg(s);
+    qDebug() << QTime::currentTime() << ": " << QString("Cmd :%1").arg(s);
 #endif
 
     selCode = lwlInput[IBCode];
@@ -425,7 +425,7 @@ void cBridge::setParameterCommands()
 
     cmdList.append(s = QString("sens:rng1:il1:rang %1;\n").arg(m_pBridgeConfigData->m_CurrentRangeHash[selCode]));
 #ifdef DEBUGRange
-    qDebug() << QString("Cmd :%1").arg(s);
+    qDebug() << QTime::currentTime() << ": " << QString("Cmd :%1").arg(s);
 #endif
 
     // we set all configuration listed measuring modes related to MMCode
@@ -480,11 +480,11 @@ void cBridge::bridgeActiveMeasureDone()
         int t;
         t = rangeTime.elapsed();
 
-        qDebug() << QString("VoltageRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["UB"]), 6, 'f', 2).arg(t);
+        qDebug() << QTime::currentTime() << ": " << QString("VoltageRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["UB"]), 6, 'f', 2).arg(t);
         if ( (*(ActValueHash["IB"]) < 1.0))
-            qDebug() << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 3).arg(t);
+            qDebug() << QTime::currentTime() << ": " << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 3).arg(t);
         else
-            qDebug() << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 2).arg(t);
+            qDebug() << QTime::currentTime() << ": " << QString("CurrentRangeInfo %1 dt[ms]=%2").arg(*(ActValueHash["IB"]), 6, 'f', 2).arg(t);
     }
 #endif
 
@@ -499,20 +499,20 @@ void cBridge::bridgeActiveMeasureDone()
                 m_nRecoveryCount++;
                 m_nRecoveryCountTotal++;
 #ifdef DEBUGRange
-                qDebug() << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
+                qDebug() << QTime::currentTime() << ": " << QString("RecoveryCount:%1").arg(m_nRecoveryCount);
 #endif
             }
             else
             {
 #ifdef DEBUGRange
-                qDebug() << QString("Wrong range no overload condition");
+                qDebug() << QTime::currentTime() << ": " << QString("Wrong range no overload condition");
 #endif
             }
         }
         else
         {
 #ifdef DEBUGRange
-            qDebug() << QString("Wrong range recoverytimer expired") << QString("RangeRead: %1").arg(*ActValueHash["IB"]) << QString("RangeWanted: %1").arg(m_fIBValueSet);
+            qDebug() << QTime::currentTime() << ": " << QString("Wrong range recoverytimer expired") << QString("RangeRead: %1").arg(*ActValueHash["IB"]) << QString("RangeWanted: %1").arg(m_fIBValueSet);
 #endif
         }
 
@@ -531,7 +531,7 @@ void cBridge::bridgeActiveMeasureDone()
 void cBridge::bridgeActiveParameterStart()
 {
 #ifdef DEBUGPar
-    qDebug() << "Bridge parameter start state entered";
+    qDebug() << QTime::currentTime() << ": " << "Bridge parameter start state entered";
 #endif
     parameterDelegate->execute();
 }
@@ -540,7 +540,7 @@ void cBridge::bridgeActiveParameterStart()
 void cBridge::bridgeActiveParameterDone()
 {
 #ifdef DEBUGPar
-    qDebug() << "Bridge parameter done state entered";
+    qDebug() << QTime::currentTime() << ": " << "Bridge parameter done state entered";
 #endif
     m_fUBValueSet = m_fUBValueWanted;
     m_fIBValueSet = m_fIBValueWanted;
