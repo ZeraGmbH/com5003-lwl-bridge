@@ -114,15 +114,20 @@ void cLWLConnection::sendActualValues(QHash<QString, double *> &actualValuesHash
 
     if ( (*(actualValuesHash["IB"]) < 1.0))
     {
-        s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3);
-        lwlOutput.replace(pos, 6, s2.toLatin1());
+        s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 3); 
     }
     else
     {
         s2 = QString("%1").arg(*(actualValuesHash["IB"]), 6, 'f', 2);
-        lwlOutput.replace(pos, 6, s2.toLatin1());
     }
+
+    lwlOutput.replace(pos, 6, s2.toLatin1());
     pos+=6;
+
+#ifdef DEBUGRange
+    qDebug() << QTime::currentTime() << ": " << QString("CurrentRangeSent: ") << s2;
+#endif
+
 
     // up to here we set actual values, voltage and current range information
 
