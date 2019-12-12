@@ -1,5 +1,6 @@
 #include <QTcpSocket>
 
+#include "bridge.h"
 #include <useratan.h>
 
 #include "ethmeasuredelegate.h"
@@ -211,6 +212,9 @@ void cETHMeasureDelegate::receiveAnswer()
 
                     rngValue = answer.toDouble(&ok) * scale;
                     *(m_ActualValuesHash["IB"]) = rngValue;
+#ifdef DEBUGRange
+                    qDebug() << QTime::currentTime() << ": " << "COM5003 current range value received: " << rngValue;
+#endif
                 }
 
             else

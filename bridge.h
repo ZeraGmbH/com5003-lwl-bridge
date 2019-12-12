@@ -25,6 +25,7 @@ class cETHOscilloscopeDelegate;
 #define DEBUGPar 1
 //#define DEBUGMeas 1
 #define DEBUGRange 1
+#define DEBUGCmd 1;
 
 enum bridgeExitConditions
 {

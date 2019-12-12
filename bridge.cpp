@@ -359,7 +359,7 @@ void cBridge::bridgeLWLCommand()
     // data has been read from lwlconnection and we have to
     // derive some commands from data and send them to the reference meter
 #ifdef DEBUGCmd
-    qDebug() << "Bridge fg301 lwl command received";
+    qDebug() << QTime::currentTime() << ": " << "Bridge fg301 lwl command received";
 #endif
 
     setParameterCommands();
