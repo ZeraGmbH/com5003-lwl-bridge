@@ -4,6 +4,9 @@
 #
 #-------------------------------------------------
 
+# CR100 image should follo version set here
+VERSION = 1.19
+
 CONFIG += c++11
 
 include(bridge.user.pri)
