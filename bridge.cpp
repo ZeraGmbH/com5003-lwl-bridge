@@ -58,6 +58,7 @@ cBridge::cBridge()
     connect(&rangeRecoveryTimer, SIGNAL(timeout()), SLOT(rangeRecoveryExpired()));
 
     m_pBridgeConfigStateMachine->start();
+    qInfo("com5003-lwl-bridge started");
 }
 
 

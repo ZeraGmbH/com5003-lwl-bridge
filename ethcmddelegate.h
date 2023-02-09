@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QStringList>
+#include <QByteArray>
 
 
 class QTcpSocket;
@@ -10,7 +11,6 @@ class QTcpSocket;
 class cETHCmdDelegate: public QObject
 {
     Q_OBJECT
-
 public:
     cETHCmdDelegate(QTcpSocket *socket);
     virtual ~cETHCmdDelegate(){}
@@ -21,6 +21,7 @@ signals:
     void finished();
 
 protected:
+    void writeWithLog(const QByteArray &data);
     QTcpSocket *m_pSocket;
 
 protected slots:

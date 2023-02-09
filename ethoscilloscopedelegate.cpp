@@ -43,7 +43,7 @@ void cETHOscilloscopeDelegate::execute()
     m_fPhaseAngle = m_pMeasureDelegate->getActualValue(QString("W%1").arg(channelList.at(index).toUpper()));
 
     connect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
-    m_pSocket->write(QString("meas:osc1:%1?\n").arg(channelList.at(index)).toLatin1());
+    writeWithLog(QString("meas:osc1:%1?\n").arg(channelList.at(index)).toLatin1());
 }
 
 
