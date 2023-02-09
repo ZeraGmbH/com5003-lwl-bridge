@@ -40,9 +40,7 @@ QTcpSocket *cETHConnection::getSocket()
 
 void cETHConnection::try2Connect()
 {
-#ifdef DEBUGInit
-    qDebug() << QString("Bridge start connection to %1:%2").arg(m_pConfigData->m_sIPReferenceMeter).arg(m_pConfigData->m_nPortReferenceMeter);
-#endif
+    qInfo() << QString("Bridge start connection to %1:%2").arg(m_pConfigData->m_sIPReferenceMeter).arg(m_pConfigData->m_nPortReferenceMeter);
     m_pSocket->connectToHost(QHostAddress(m_pConfigData->m_sIPReferenceMeter), m_pConfigData->m_nPortReferenceMeter);
 }
 
@@ -62,7 +60,7 @@ void cETHConnection::regDisconnection()
 
 void cETHConnection::regError(QAbstractSocket::SocketError err)
 {
-    qDebug() << QString("Bridge ethernet connection error %1").arg(err);
+    qWarning() << QString("Bridge ethernet connection error %1").arg(err);
 
     QAbstractSocket::SocketState sockState;
     sockState = m_pSocket->state();
