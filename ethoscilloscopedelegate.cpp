@@ -67,7 +67,7 @@ void cETHOscilloscopeDelegate::receiveAnswer()
     int pos;
     bool ok;
 
-    data = answer = QString(m_pSocket->readLine());
+    data = answer = QString(readLineWithLog());
     disconnect(m_pSocket, SIGNAL(readyRead()), this, SLOT(receiveAnswer()));
 
     pos = answer.lastIndexOf(":");

@@ -22,6 +22,7 @@ signals:
 
 protected:
     void writeWithLog(const QByteArray &data);
+    QByteArray readLineWithLog(qint64 maxlen = 0);
     QTcpSocket *m_pSocket;
 
 protected slots:

@@ -169,7 +169,7 @@ void cETHMeasureDelegate::receiveAnswer()
     {
         QString answer;
 
-        answer = QString(m_pSocket->readLine());
+        answer = QString(readLineWithLog());
         answer.remove('\n');
 
         if (answer.count(';') == 0)

@@ -36,7 +36,7 @@ void cETHParameterDelegate::receiveAnswer()
         int rm;
         bool ok;
 
-        answer = QString(m_pSocket->readLine());
+        answer = QString(readLineWithLog());
         answer.remove('\n');
         answer.remove('+');
 
