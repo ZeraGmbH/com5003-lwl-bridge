@@ -30,6 +30,7 @@ Thumbs.db
 *.pro.user*
 *.qmlproject.user*
 *.pluginspec
+CMakeLists.txt.user*
 
 #ignore the doc directory
 doc/*
