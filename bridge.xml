@@ -40,11 +40,11 @@
         <measuringmode>
             <n>11</n>
             <code1>1,pow4,4LW,pow1,4LW,pow2,4LB,pow3,4LS</code1>
-            <code2>2,pow4,3LW,pow1,3LW,pow2,3LB,pow3,4LS</code2>
+            <code2>2,pow4,3LW,pow1,3LW,pow2,3LB,pow3,3LSg</code2>
             <code3>3,pow4,2LW,pow1,2LW,pow2,2LB,pow3,2LS</code3>
             <code4>4,pow4,4LB,pow1,4LW,pow2,4LB,pow3,4LS</code4>
             <code5>5,pow4,4LBK,pow1,4LW,pow2,4LBK,pow3,4LS</code5>
-            <code6>6,pow4,3LB,pow1,3LW,pow2,3LB,pow3,4LS</code6>
+            <code6>6,pow4,3LB,pow1,3LW,pow2,3LB,pow3,3LSg</code6>
             <code7>7,pow4,2LB,pow1,2LW,pow2,2LB,pow3,2LS</code7>
             <code8>8,pow4,4LS,pow1,4LW,pow2,4LB,pow3,4LS</code8>
             <code9>9,pow4,4LSg,pow1,4LW,pow2,4LB,pow3,4LSg</code9>
