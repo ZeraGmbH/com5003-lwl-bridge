@@ -12,6 +12,8 @@ set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 
 include(FeatureSummary)
 include(GNUInstallDirs)
+include(GenerateExportHeader)
+include(CMakePackageConfigHelpers)
 include(FindPkgConfig)
 
 find_package(Qt5 COMPONENTS Core Network CONFIG REQUIRED)
