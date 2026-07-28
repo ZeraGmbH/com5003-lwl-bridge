@@ -52,9 +52,6 @@ target_include_directories(com5003-lwl-bridge
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     )
 
-set_target_properties(com5003-lwl-bridge PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(com5003-lwl-bridge PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
-
 install(TARGETS com5003-lwl-bridge
     EXPORT com5003-lwl-bridge
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
