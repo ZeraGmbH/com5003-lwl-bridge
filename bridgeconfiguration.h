@@ -35,7 +35,6 @@ enum moduleconfigstate
 
 class cBridgeConfigData;
 
-const QString defaultXSDFile = "/etc/zera/com5003lwlbridge/bridge.xsd";
 const QString defaultXMLFile = "/etc/zera/com5003lwlbridge/bridge.xml";
 
 

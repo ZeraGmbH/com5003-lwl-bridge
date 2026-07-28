@@ -47,10 +47,7 @@ void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
     m_ConfigXMLMap["bridgeconf:referencemeter:currentrange:n"] = setCurrentrangeCount;
     m_ConfigXMLMap["bridgeconf:referencemeter:measuringmode:n"] = setMeasuringmodeCount;
 
-    if (m_pXMLReader->loadSchema(defaultXSDFile))
-        m_pXMLReader->loadXMLFromString(QString::fromUtf8(xmlString.data(), xmlString.size()));
-    else
-        emit error(configError);
+    m_pXMLReader->loadXMLFromString(QString::fromUtf8(xmlString.data(), xmlString.size()));
 }
 
 

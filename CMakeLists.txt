@@ -12,6 +12,7 @@ set(PROJECT_VERSION "${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}.${PROJECT
 
 include(FeatureSummary)
 include(GNUInstallDirs)
+include(FindPkgConfig)
 
 find_package(Qt5 COMPONENTS Core Network CONFIG REQUIRED)
 find_package(Qt5Test REQUIRED)
@@ -23,20 +24,6 @@ file(GLOB HEADER
     )
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    )
-
-set(CONFIG_FILES
-    ${CMAKE_CURRENT_SOURCE_DIR}/bridge.xml
-    )
-set(CONFIG_VALIDATOR
-    ${CMAKE_CURRENT_SOURCE_DIR}/bridge.xsd
-    )
-
-# check for valid config files / display in qt-creator
-add_custom_target(com5003-lwl-bridge-configs ALL
-    DEPENDS ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    SOURCES ${CONFIG_VALIDATOR} ${CONFIG_FILES}
-    COMMAND xmllint --noout --schema ${CONFIG_VALIDATOR} ${CONFIG_FILES}
     )
 
 add_executable(com5003-lwl-bridge
@@ -68,5 +55,7 @@ install(TARGETS com5003-lwl-bridge
     )
 
 enable_testing()
+
+add_subdirectory(configs)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
