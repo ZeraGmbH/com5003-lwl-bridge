@@ -18,6 +18,10 @@ find_package(Qt5 COMPONENTS Core Network CONFIG REQUIRED)
 find_package(Qt5Test REQUIRED)
 find_package(spidevice REQUIRED)
 find_package(ZeraClasses REQUIRED)
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(Systemd REQUIRED libsystemd)
+# better suggestions?
+get_filename_component(SYSTEMD_UNIT_INSTALL_PATH "${CMAKE_INSTALL_PREFIX}/../lib/systemd/system" ABSOLUTE)
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
@@ -57,5 +61,6 @@ install(TARGETS com5003-lwl-bridge
 enable_testing()
 
 add_subdirectory(configs)
+add_subdirectory(systemd)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)

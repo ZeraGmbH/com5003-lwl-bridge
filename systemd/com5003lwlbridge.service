@@ -1,0 +1,10 @@
+[Unit]
+Description=COM5003LWLBRIDGE daemon
+After=bbridge-fpgafile.service
+
+[Service]
+ExecStart=/usr/bin/com5003lwlbridge
+Type=simple
+
+[Install]
+WantedBy=multi-user.target
