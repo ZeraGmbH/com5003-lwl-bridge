@@ -1,15 +1,3 @@
-#include <QFile>
-#include <QDebug>
-#include <QCoreApplication>
-#include <QStringList>
-#include <QString>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QSPIDevice>
-#include <math.h>
-
-
 #include "bridge.h"
 #include "lwlconnection.h"
 #include "ethconnection.h"
@@ -18,10 +6,16 @@
 #include "ethparameterdelegate.h"
 #include "ethmeasuredelegate.h"
 #include "ethoscilloscopedelegate.h"
-#include "ethcmdserializer.h"
 #include "spiconnection.h"
-
-
+#include <QFile>
+#include <QDebug>
+#include <QCoreApplication>
+#include <QStringList>
+#include <QStateMachine>
+#include <QState>
+#include <QFinalState>
+#include <QSPIDevice>
+#include <math.h>
 
 cBridge::cBridge()
 {
@@ -109,27 +103,18 @@ cBridge::~cBridge()
         delete measureDelegate;
         delete oscilloscopeDelegate;
     }
-
-
 }
-
 
 void cBridge::bridgeConfiguration()
 {
-    QFile *file;
-    QByteArray xmlConfigData;
-
-    file = new QFile(defaultXMLFile);
-    if (file->open(QIODevice::Unbuffered | QIODevice::ReadOnly))
-    {
-        xmlConfigData = file->readAll();
+    QFile *file = new QFile(defaultXMLFile);
+    if (file->open(QIODevice::Unbuffered | QIODevice::ReadOnly)) {
+        QByteArray xmlConfigData = file->readAll();
         file->close();
         m_pBridgeConfiguration->setConfiguration(xmlConfigData);
     }
-
     delete file;
 }
-
 
 void cBridge::bridgeConfigurationDone()
 {
@@ -138,63 +123,53 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeConfigData = m_pBridgeConfiguration->getConfigurationData();
 
     m_pSPICtrlDevice = new QSPIDevice(m_pBridgeConfigData->m_sSPICtrlDeviceName);
-    if (!m_pSPICtrlDevice->open(QIODevice::ReadWrite))
-    {
+    if (!m_pSPICtrlDevice->open(QIODevice::ReadWrite)) {
         bridgeError(-1); // we cancel program if we don't find specified spi device
         return;
     }
 
-    if (!m_pSPICtrlDevice->setBitSpeed(16000000)) // see BB-SPIDEVx-00A0.dts
-    {
+    if (!m_pSPICtrlDevice->setBitSpeed(16000000)) { // see BB-SPIDEVx-00A0.dts
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPICtrlDevice->setMode(3))
-    {
+    if(!m_pSPICtrlDevice->setMode(3)) {
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPICtrlDevice->setLSBFirst(false))
-    {
+    if(!m_pSPICtrlDevice->setLSBFirst(false)) {
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPICtrlDevice->setBitsPerWord(8))
-    {
+    if(!m_pSPICtrlDevice->setBitsPerWord(8)) {
         bridgeError(-1);
         return;
     }
 
     m_pSPIDataDevice = new QSPIDevice(m_pBridgeConfigData->m_sSPIDataDeviceName);
-    if (!m_pSPIDataDevice->open(QIODevice::ReadWrite))
-    {
+    if (!m_pSPIDataDevice->open(QIODevice::ReadWrite)) {
         bridgeError(-1); // we cancel program if we don't find specified spi device
         return;
     }
 
-    if (!m_pSPIDataDevice->setBitSpeed(16000000)) // see BB-SPIDEVx-00A0.dts
-    {
+    if (!m_pSPIDataDevice->setBitSpeed(16000000)) { // see BB-SPIDEVx-00A0.dts
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPIDataDevice->setMode(3))
-    {
+    if(!m_pSPIDataDevice->setMode(3)) {
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPIDataDevice->setLSBFirst(false))
-    {
+    if(!m_pSPIDataDevice->setLSBFirst(false)) {
         bridgeError(-1);
         return;
     }
 
-    if(!m_pSPIDataDevice->setBitsPerWord(8))
-    {
+    if(!m_pSPIDataDevice->setBitsPerWord(8)) {
         bridgeError(-1);
         return;
     }
@@ -276,14 +251,12 @@ void cBridge::bridgeConfigurationDone()
     m_pBridgeStateMachine->start();
 }
 
-
 void cBridge::bridgeInactive()
 {
     m_bActive = false;
     m_bOscilloscopeCmd = false;
     m_bParameterCmd = false;
 }
-
 
 void cBridge::bridgeIdle()
 {
@@ -293,7 +266,6 @@ void cBridge::bridgeIdle()
     m_pSPIConnection->setStatus(bridgeIdleStatus);
 }
 
-
 void cBridge::bridgeLWLConnected()
 {
 #ifdef DEBUGInit
@@ -302,7 +274,6 @@ void cBridge::bridgeLWLConnected()
     m_pSPIConnection->setStatus(bridgeLWLConnectedStatus);
 }
 
-
 void cBridge::bridgeETHConnected()
 {
 #ifdef DEBUGInit
@@ -310,7 +281,6 @@ void cBridge::bridgeETHConnected()
 #endif
     m_pSPIConnection->setStatus(bridgeETHConnectedStatus);
 }
-
 
 void cBridge::bridgeActiveInit()
 {    
@@ -340,7 +310,6 @@ void cBridge::bridgeActiveInit()
     parameterDelegate->execute();
 }
 
-
 void cBridge::bridgeActiveInitDone()
 {
 #ifdef DEBUGInit
@@ -353,7 +322,6 @@ void cBridge::bridgeActiveInitDone()
 
     parameterDelegate->execute();
 }
-
 
 void cBridge::bridgeLWLCommand()
 {
@@ -374,7 +342,6 @@ void cBridge::bridgeLWLCommand()
 
 }
 
-
 void cBridge::setParameterCommands()
 {
     QByteArray lwlInput;
@@ -393,8 +360,7 @@ void cBridge::setParameterCommands()
 
     s = m_pBridgeConfigData->m_VoltageRangeHash[selCode];
     s.replace("V","");
-    if (s.contains('m') > 0)
-    {
+    if (s.contains('m') > 0) {
         s.replace("m","");
         scale = 0.001;
     }
@@ -414,8 +380,7 @@ void cBridge::setParameterCommands()
 
     s = m_pBridgeConfigData->m_CurrentRangeHash[selCode];
     s.replace("A","");
-    if (s.contains('m') > 0)
-    {
+    if (s.contains('m') > 0) {
         s.replace("m","");
         scale = 0.001;
     }
@@ -444,16 +409,13 @@ void cBridge::setParameterCommands()
 
     int osciChannel = lwlInput[OsciCmd] & 0x7f;
 
-    if (!m_bOscilloscopeCmd) // retrigger impossible
-    {
-        if (osciChannel > 0) // we have to start the oscilloscope now (statemachine)
-        {
+    if (!m_bOscilloscopeCmd) { // retrigger impossible
+        if (osciChannel > 0) { // we have to start the oscilloscope now (statemachine)
             oscilloscopeDelegate->setChannel(osciChannel);
             m_bOscilloscopeCmd = true;
         }
     }
 }
-
 
 void cBridge::bridgeActiveMeasureStart()
 {
@@ -462,7 +424,6 @@ void cBridge::bridgeActiveMeasureStart()
 #endif
     measureDelegate->execute();
 }
-
 
 void cBridge::bridgeActiveMeasureDone()
 {
@@ -491,10 +452,8 @@ void cBridge::bridgeActiveMeasureDone()
 
     if ( !(fabs((*ActValueHash["UB"]) - m_fUBValueSet) < 1e-7) || !(fabs((*ActValueHash["IB"]) - m_fIBValueSet) < 1e-7) )
     // a voltage or current range is not what we wanted
-        if (rangeRecoveryTimer.isActive())
-        {
-            if (*ActValueHash["OVL"] > 0.0) // reference meter has overload
-            {
+        if (rangeRecoveryTimer.isActive()) {
+            if (*ActValueHash["OVL"] > 0.0) {// reference meter has overload
                 setParameterCommands();
                 m_bParameterCmd = true;
                 m_nRecoveryCount++;
@@ -517,17 +476,14 @@ void cBridge::bridgeActiveMeasureDone()
 #endif
         }
 
-    if (m_bParameterCmd)
-    {
+    if (m_bParameterCmd) {
         m_bParameterCmd = false;
         rangeTime.start();
         emit startParameter();
     }
-
     else
        emit startMeasurement();
 }
-
 
 void cBridge::bridgeActiveParameterStart()
 {
@@ -537,7 +493,6 @@ void cBridge::bridgeActiveParameterStart()
     parameterDelegate->execute();
 }
 
-
 void cBridge::bridgeActiveParameterDone()
 {
 #ifdef DEBUGPar
@@ -546,8 +501,7 @@ void cBridge::bridgeActiveParameterDone()
     m_fUBValueSet = m_fUBValueWanted;
     m_fIBValueSet = m_fIBValueWanted;
 
-    if (m_bfirstParameterSend)
-    {
+    if (m_bfirstParameterSend) {
         m_bfirstParameterSend = false; // it was the first send of parameter after new lwl config.
         rangeRecoveryTimer.start(); // after we sent parameters we start our recovery timer
     }
@@ -586,11 +540,8 @@ void cBridge::bridgeActiveOscilloscopeSync()
 #endif
 
     QByteArray &lwlinput = m_pLWLConnection->getLWLInput();
-
     if (lwlinput.at(OsciCmd) > 0)
-    {
         syncTimer.start();
-    }
     else
     {
         m_pLWLConnection->sendCmdRecognized(false);
