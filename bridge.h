@@ -1,25 +1,21 @@
 #ifndef BRIDGE
 #define BRIDGE
 
-#include <QObject>
-#include <QHash>
-#include <QStringList>
+#include "bridgeconfiguration.h"
+#include "bridgeconfigdata.h"
+#include "spiconnection.h"
+#include "ethconnection.h"
+#include "ethparameterdelegate.h"
+#include "ethmeasuredelegate.h"
+#include "ethoscilloscopedelegate.h"
+#include "lwlconnection.h"
+#include <QStateMachine>
+#include <QState>
+#include <QFinalState>
+#include <QSPIDevice>
 #include <QTimer>
 #include <QTime>
-
-
-class QStateMachine;
-class QState;
-class QFinalState;
-class QTcpSocket;
-
-class cLWLConnection;
-class cETHConnection;
-class cBridgeConfiguration;
-class cBridgeConfigData;
-class cETHParameterDelegate;
-class cETHMeasureDelegate;
-class cETHOscilloscopeDelegate;
+#include <QTcpSocket>
 
 //#define DEBUGInit 1
 //#define DEBUGPar 1
@@ -41,16 +37,12 @@ enum lwlDataPositions
     OsciCmd = 28
 };
 
-class cSPIConnection;
-class QSPIDevice;
-
 class cBridge: public QObject
 {
     Q_OBJECT
-
 public:
     cBridge();
-    ~cBridge();
+    ~cBridge() override;
 
 signals:
     void startMeasurement();
@@ -136,8 +128,6 @@ private slots:
     void bridgeError(int errNum);
 
     void rangeRecoveryExpired();
-
-
 };
 
 #endif // BRIDGE

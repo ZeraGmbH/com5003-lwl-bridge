@@ -1,20 +1,7 @@
 #include "bridge.h"
-#include "lwlconnection.h"
-#include "ethconnection.h"
-#include "bridgeconfiguration.h"
-#include "bridgeconfigdata.h"
-#include "ethparameterdelegate.h"
-#include "ethmeasuredelegate.h"
-#include "ethoscilloscopedelegate.h"
-#include "spiconnection.h"
 #include <QFile>
 #include <QDebug>
 #include <QCoreApplication>
-#include <QStringList>
-#include <QStateMachine>
-#include <QState>
-#include <QFinalState>
-#include <QSPIDevice>
 #include <math.h>
 
 cBridge::cBridge()
