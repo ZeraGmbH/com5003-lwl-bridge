@@ -1,20 +1,15 @@
 #ifndef ETHCMDDELEGATE
 #define ETHCMDDELEGATE
 
-#include <QObject>
+#include <QTcpSocket>
 #include <QStringList>
 #include <QByteArray>
-
-
-class QTcpSocket;
 
 class cETHCmdDelegate: public QObject
 {
     Q_OBJECT
 public:
     cETHCmdDelegate(QTcpSocket *socket);
-    virtual ~cETHCmdDelegate(){}
-
     virtual void execute() = 0;
 
 signals:

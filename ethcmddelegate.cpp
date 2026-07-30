@@ -1,8 +1,7 @@
 #include "ethcmddelegate.h"
-#include "QTcpSocket"
 
-cETHCmdDelegate::cETHCmdDelegate(QTcpSocket *socket)
-    :m_pSocket(socket)
+cETHCmdDelegate::cETHCmdDelegate(QTcpSocket *socket) :
+    m_pSocket(socket)
 {
 }
 
