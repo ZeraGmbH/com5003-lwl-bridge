@@ -22,6 +22,26 @@ cBridgeConfiguration::~cBridgeConfiguration()
 }
 
 
+enum moduleconfigstate
+{
+    setDebugLevel,
+    setReferenceMeterIp,
+    setReferenceMeterPort,
+    setSPICtrlDeviceName,
+    setSPIDataDeviceName,
+    setPllAuto,
+    setRangeAuto,
+    setGrouping,
+    setIntegrationtime,
+    setVoltagerangeCount,
+    setCurrentrangeCount,
+    setMeasuringmodeCount,
+
+    setVoltagerange1 = 16, // we leave place for up to 32 ranges .....
+    setCurrentrange1 = 48,
+    setMeasuringmode1 = 80
+};
+
 void cBridgeConfiguration::setConfiguration(QByteArray xmlString)
 {
     m_bConfigured = m_bConfigError = false;

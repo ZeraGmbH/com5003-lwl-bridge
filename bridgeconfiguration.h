@@ -12,27 +12,6 @@ namespace XMLConfig
 }
 }
 
-enum moduleconfigstate
-{
-    setDebugLevel,
-    setReferenceMeterIp,
-    setReferenceMeterPort,
-    setSPICtrlDeviceName,
-    setSPIDataDeviceName,
-    setPllAuto,
-    setRangeAuto,
-    setGrouping,
-    setIntegrationtime,
-    setVoltagerangeCount,
-    setCurrentrangeCount,
-    setMeasuringmodeCount,
-
-    setVoltagerange1 = 16, // we leave place for up to 32 ranges .....
-    setCurrentrange1 = 48,
-    setMeasuringmode1 = 80
-};
-
-
 class cBridgeConfigData;
 
 const QString defaultXMLFile = "/etc/zera/com5003lwlbridge/bridge.xml";
