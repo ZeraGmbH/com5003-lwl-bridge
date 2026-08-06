@@ -1,9 +1,8 @@
 #ifndef SPICONNECTION
 #define SPICONNECTION
 
+#include <QSPIDevice>
 #include <QByteArray>
-
-class QSPIDevice;
 
 enum devStatus
 {
@@ -19,16 +18,16 @@ public:
     cSPIConnection(QSPIDevice *spictrldev, QSPIDevice *spidatadev);
     ~cSPIConnection(){}
 
-    bool writeSPI(QByteArray& Output, quint32 OutputAdress, qint32 len);
+    bool writeSPI(const QByteArray& Output, quint32 OutputAdress, qint32 len);
     bool readSPI(QByteArray& Input, quint32 InputAdress, qint32 len);
     bool setStatus(devStatus stat);
 
 private:
-    QSPIDevice *m_pSPICtrlDevice;
-    QSPIDevice *m_pSPIDataDevice;
-    QByteArray ctrlBA;
-
     bool setDataAdress(quint32 adress, bool write);
+
+    QSPIDevice *m_pSPICtrlDevice = nullptr;
+    QSPIDevice *m_pSPIDataDevice = nullptr;
+    QByteArray m_ctrlBA;
 };
 
 #endif // SPICONNECTION
